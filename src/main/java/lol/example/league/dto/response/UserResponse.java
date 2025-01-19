@@ -22,6 +22,7 @@ public class UserResponse {
     private String picture;
     private Integer cwin;
     private Integer close;
+    private Integer rating;
 
 
 //    public UserResponse(User user, Integer matchNumber, Integer win, Integer loss, String winRate, Integer winPoint){
@@ -64,5 +65,6 @@ public class UserResponse {
             this.subLane = user.getSubLane();
         }
         this.picture= user.getPicture();
+        this.rating = user.getRating();
     }
 }

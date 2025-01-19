@@ -34,6 +34,9 @@ public class User {
     @Column(name = "bracket")
     private Integer bracket;
 
+    @Column(name = "rating")
+    private Integer rating;
+
     @Column(name = "main_lane")
     private String mainLane;
 
@@ -70,12 +73,16 @@ public class User {
     private Long updatedBy;
 
 
-    public void update(String userName, String mainLane,String subLane, Long updatedBy, LocalDateTime updatedAt){
+    public void update(String userName, String mainLane, String subLane, Long updatedBy, LocalDateTime updatedAt){
         this.userName = userName;
         this.mainLane = mainLane;
         this.subLane = subLane;
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
+    }
+
+    public void updateRating(Integer rating){
+        this.rating = rating;
     }
 
     public User update(String name, String picture){

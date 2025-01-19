@@ -46,7 +46,8 @@
              userName : $('#userName').val(),
              tier : $('#tier').val(),
              mainLane : $('#mainLane').val(),
-             subLane : $('#subLane').val()
+             subLane : $('#subLane').val(),
+             rating : $('#rating').val()
          };
 
          var id = $('#id').val();

@@ -118,6 +118,9 @@ public class UserService {
         if(userInfo.getEmail().equals(user.getEmail()) || admin.getRole().equals(Role.ADMIN)) {
             user.update(request.getUserName(), request.getMainLane(), request.getSubLane(), admin.getUserId(), LocalDateTime.now());
         }
+        if(admin.getRole().equals(Role.ADMIN)) {
+            user.updateRating(request.getRating());
+        }
         return "유저 정보가 저장되었습니다";
     }
 
@@ -152,22 +155,23 @@ public class UserService {
 
 //            GameLog last = logRepository.findTop1ByUserIdAndSeasonOrderByGameIdDesc(Long.valueOf(String.valueOf(d.get("user_id"))),season);
 //            List<GameLog> gameList = logRepository.findByUserIdAndSeasonOrderByGameIdDesc(Long.valueOf(String.valueOf(d.get("user_id"))),season);
-            List<Map<String,String>> roundResult = logRepository.getConsecutiveRound(Long.valueOf(String.valueOf(d.get("user_id"))),season);
-            if (roundResult.size() > 0) {
-                String result = roundResult.get(0).get("result");
-                for(Map<String,String> round : roundResult){
-                    if(round.get("result").equals(result)){
-                        if(round.get("result").equals(GameResult.LOSE.toString())){
-                            close+=1;
-                        }else if(round.get("result").equals(GameResult.WIN.toString())){
-                            cwin+=1;
-                        }
-                    }
-                    else{
-                        break;
-                    }
-                }
-            }
+
+//            List<Map<String,String>> roundResult = logRepository.getConsecutiveRound(Long.valueOf(String.valueOf(d.get("user_id"))),season);
+//            if (roundResult.size() > 0) {
+//                String result = roundResult.get(0).get("result");
+//                for(Map<String,String> round : roundResult){
+//                    if(round.get("result").equals(result)){
+//                        if(round.get("result").equals(GameResult.LOSE.toString())){
+//                            close+=1;
+//                        }else if(round.get("result").equals(GameResult.WIN.toString())){
+//                            cwin+=1;
+//                        }
+//                    }
+//                    else{
+//                        break;
+//                    }
+//                }
+//            }
 
 
 
@@ -182,12 +186,12 @@ public class UserService {
                     .loss(Integer.valueOf(String.valueOf(d.get("loseCount"))))
                     .winRate(rate)
                     .winPoint(Integer.valueOf(String.valueOf(d.get("point"))))
-                    .cwin(cwin)
-                    .close(close)
+//                    .cwin(cwin)
+//                    .close(close)
                     .build();
             response.add(data);
-            cwin=0;
-            close=0;
+//            cwin=0;
+//            close=0;
         }
         return ApiResponseUtil.success(response);
 //        return response;

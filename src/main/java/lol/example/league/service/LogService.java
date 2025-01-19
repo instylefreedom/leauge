@@ -117,6 +117,7 @@ public class LogService {
                                 .createdBy(admin.getUserId())
                                 .build();
                         repository.save(log);
+                        calculateUserRating(user, team1);
                     }
 
                     for (int k = 5; k < 10; k++) {
@@ -134,6 +135,7 @@ public class LogService {
                                 .createdBy(admin.getUserId())
                                 .build();
                         repository.save(log);
+                        calculateUserRating(user, team2);
                     }
                     gameId ++;
                     setCount ++;
@@ -144,141 +146,6 @@ public class LogService {
                 }
             }
 
-            int cwin = 0;
-            int close = 0;
-            // 티어 업데이트 작업 시작
-            for(String p : player){
-                User user = service.findByName(p);
-                // 연승패 계산
-                List<Map<String,String>> roundResult = logRepository.getConsecutiveRound(user.getUserId(), Long.valueOf(season));
-                if (roundResult.size() > 0) {
-                    String result = roundResult.get(0).get("result");
-                    for(Map<String,String> rounds : roundResult){
-                        if(rounds.get("result").equals(result)){
-                            if(rounds.get("result").equals(GameResult.LOSE.toString())){
-                                close+=1;
-                            }else if(rounds.get("result").equals(GameResult.WIN.toString())){
-                                cwin+=1;
-                            }
-                        }
-                        else{
-                            break;
-                        }
-                    }
-                }
-
-                // 연승패에 따른 티어 변경 작업
-                if(cwin > 0 && cwin % 4 == 0){
-                    switch (user.getTier()){
-                        //실버
-                        case 10 :
-                            user.updateTier(20,4);
-                            break;
-                        //골드
-                        case 20 :
-                            if(user.getBracket().equals(1))
-                                user.updateTier(30,4);
-                            else if(user.getBracket().equals(2))
-                                user.updateTier(20,1);
-                            else if(user.getBracket().equals(3))
-                                user.updateTier(20,2);
-                            else if(user.getBracket().equals(4))
-                                user.updateTier(20,3);
-                            break;
-                        //플레
-                        case 30 :
-                            if(user.getBracket().equals(1))
-                                user.updateTier(40,4);
-                            else if(user.getBracket().equals(2))
-                                user.updateTier(30,1);
-                            else if(user.getBracket().equals(3))
-                                user.updateTier(30,2);
-                            else if(user.getBracket().equals(4))
-                                user.updateTier(30,3);
-                            break;
-                        //에메
-                        case 40 :
-                            if(user.getBracket().equals(1))
-                                user.updateTier(50,4);
-                            else if(user.getBracket().equals(2))
-                                user.updateTier(40,1);
-                            else if(user.getBracket().equals(3))
-                                user.updateTier(40,2);
-                            else if(user.getBracket().equals(4))
-                                user.updateTier(40,3);
-                            break;
-                        //다이아
-                        case 50 :
-                            if(user.getBracket().equals(1))
-                                user.updateTier(60,null);
-                            else if(user.getBracket().equals(2))
-                                user.updateTier(50,1);
-                            else if(user.getBracket().equals(3))
-                                user.updateTier(50,2);
-                            else if(user.getBracket().equals(4))
-                                user.updateTier(50,3);
-                            break;
-
-                    }
-                }
-                else if (close > 0 && close % 4 == 0){
-                    switch (user.getTier()) {
-                        //골드
-                        case 20:
-                            if (user.getBracket().equals(1))
-                                user.updateTier(20, 2);
-                            else if (user.getBracket().equals(2))
-                                user.updateTier(20, 3);
-                            else if (user.getBracket().equals(3))
-                                user.updateTier(20, 4);
-                            else if (user.getBracket().equals(4))
-                                user.updateTier(10, 1);
-                            break;
-                        //플레
-                        case 30:
-                            if (user.getBracket().equals(1))
-                                user.updateTier(30, 2);
-                            else if (user.getBracket().equals(2))
-                                user.updateTier(30, 3);
-                            else if (user.getBracket().equals(3))
-                                user.updateTier(30, 4);
-                            else if (user.getBracket().equals(4))
-                                user.updateTier(20, 1);
-                            break;
-                        //에메
-                        case 40:
-                            if (user.getBracket().equals(1))
-                                user.updateTier(40, 2);
-                            else if (user.getBracket().equals(2))
-                                user.updateTier(40, 3);
-                            else if (user.getBracket().equals(3))
-                                user.updateTier(40, 4);
-                            else if (user.getBracket().equals(4))
-                                user.updateTier(30, 1);
-                            break;
-                        //다이아
-                        case 50:
-                            if (user.getBracket().equals(1))
-                                user.updateTier(50, 2);
-                            else if (user.getBracket().equals(2))
-                                user.updateTier(50, 3);
-                            else if (user.getBracket().equals(3))
-                                user.updateTier(50, 4);
-                            else if (user.getBracket().equals(4))
-                                user.updateTier(40, 1);
-                            break;
-                        case 60:
-                            user.updateTier(50, 1);
-                            break;
-                    }
-                }
-
-                cwin = 0;
-                close = 0;
-            }
-
-
-
         }
         else {
             log.info("관리자 권한 없는 접근 시도 {}", admin.getName());
@@ -288,6 +155,175 @@ public class LogService {
 
         return null;
     }
+    public void calculateUserRating(User user, GameResult result) {
+        // 점수제 기반 +- 처리
+        // 브~골 + 1티어 점수 변동
+        if(user.getRating() <= 1780){
+            if((user.getRating()>=1560 && user.getRating()<=1580) || (user.getRating()>=1660 && user.getRating()<=1680) || (user.getRating()>=1760 && user.getRating()<=1780)) {
+                if(result.equals(GameResult.WIN)) {
+                    user.setRating(user.getRating()+2);
+                }
+                else{
+                    user.setRating(user.getRating()-4);
+                }
+            }
+            else {
+                if(result.equals(GameResult.WIN)) {
+                    user.setRating(user.getRating()+3);
+                }
+                else{
+                    user.setRating(user.getRating()-2);
+                }
+            }
+        }
+
+        // 플레 이상
+        else {
+            if(result.equals(GameResult.WIN)) {
+                user.setRating(user.getRating()+4);
+            }
+            else{
+                user.setRating(user.getRating()-2);
+            }
+        }
+
+
+    }
+// 2025/1/19 티어 연승 연패가 아닌 점수재로 작업하기로 결정
+//            int cwin = 0;
+//            int close = 0;
+//            // 티어 업데이트 작업 시작
+//            for(String p : player){
+//                User user = service.findByName(p);
+//                // 연승패 계산
+//                List<Map<String,String>> roundResult = logRepository.getConsecutiveRound(user.getUserId(), Long.valueOf(season));
+//                if (roundResult.size() > 0) {
+//                    String result = roundResult.get(0).get("result");
+//                    for(Map<String,String> rounds : roundResult){
+//                        if(rounds.get("result").equals(result)){
+//                            if(rounds.get("result").equals(GameResult.LOSE.toString())){
+//                                close+=1;
+//                            }else if(rounds.get("result").equals(GameResult.WIN.toString())){
+//                                cwin+=1;
+//                            }
+//                        }
+//                        else{
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                // 연승패에 따른 티어 변경 작업
+//                if(cwin > 0 && cwin % 4 == 0){
+//                    switch (user.getTier()){
+//                        //실버
+//                        case 10 :
+//                            user.updateTier(20,4);
+//                            break;
+//                        //골드
+//                        case 20 :
+//                            if(user.getBracket().equals(1))
+//                                user.updateTier(30,4);
+//                            else if(user.getBracket().equals(2))
+//                                user.updateTier(20,1);
+//                            else if(user.getBracket().equals(3))
+//                                user.updateTier(20,2);
+//                            else if(user.getBracket().equals(4))
+//                                user.updateTier(20,3);
+//                            break;
+//                        //플레
+//                        case 30 :
+//                            if(user.getBracket().equals(1))
+//                                user.updateTier(40,4);
+//                            else if(user.getBracket().equals(2))
+//                                user.updateTier(30,1);
+//                            else if(user.getBracket().equals(3))
+//                                user.updateTier(30,2);
+//                            else if(user.getBracket().equals(4))
+//                                user.updateTier(30,3);
+//                            break;
+//                        //에메
+//                        case 40 :
+//                            if(user.getBracket().equals(1))
+//                                user.updateTier(50,4);
+//                            else if(user.getBracket().equals(2))
+//                                user.updateTier(40,1);
+//                            else if(user.getBracket().equals(3))
+//                                user.updateTier(40,2);
+//                            else if(user.getBracket().equals(4))
+//                                user.updateTier(40,3);
+//                            break;
+//                        //다이아
+//                        case 50 :
+//                            if(user.getBracket().equals(1))
+//                                user.updateTier(60,null);
+//                            else if(user.getBracket().equals(2))
+//                                user.updateTier(50,1);
+//                            else if(user.getBracket().equals(3))
+//                                user.updateTier(50,2);
+//                            else if(user.getBracket().equals(4))
+//                                user.updateTier(50,3);
+//                            break;
+//
+//                    }
+//                }
+//                else if (close > 0 && close % 4 == 0){
+//                    switch (user.getTier()) {
+//                        //골드
+//                        case 20:
+//                            if (user.getBracket().equals(1))
+//                                user.updateTier(20, 2);
+//                            else if (user.getBracket().equals(2))
+//                                user.updateTier(20, 3);
+//                            else if (user.getBracket().equals(3))
+//                                user.updateTier(20, 4);
+//                            else if (user.getBracket().equals(4))
+//                                user.updateTier(10, 1);
+//                            break;
+//                        //플레
+//                        case 30:
+//                            if (user.getBracket().equals(1))
+//                                user.updateTier(30, 2);
+//                            else if (user.getBracket().equals(2))
+//                                user.updateTier(30, 3);
+//                            else if (user.getBracket().equals(3))
+//                                user.updateTier(30, 4);
+//                            else if (user.getBracket().equals(4))
+//                                user.updateTier(20, 1);
+//                            break;
+//                        //에메
+//                        case 40:
+//                            if (user.getBracket().equals(1))
+//                                user.updateTier(40, 2);
+//                            else if (user.getBracket().equals(2))
+//                                user.updateTier(40, 3);
+//                            else if (user.getBracket().equals(3))
+//                                user.updateTier(40, 4);
+//                            else if (user.getBracket().equals(4))
+//                                user.updateTier(30, 1);
+//                            break;
+//                        //다이아
+//                        case 50:
+//                            if (user.getBracket().equals(1))
+//                                user.updateTier(50, 2);
+//                            else if (user.getBracket().equals(2))
+//                                user.updateTier(50, 3);
+//                            else if (user.getBracket().equals(3))
+//                                user.updateTier(50, 4);
+//                            else if (user.getBracket().equals(4))
+//                                user.updateTier(40, 1);
+//                            break;
+//                        case 60:
+//                            user.updateTier(50, 1);
+//                            break;
+//                    }
+//                }
+//
+//                cwin = 0;
+//                close = 0;
+//            }
+
+
 
     @Transactional
     public String deleteLogLatest(SessionUser userInfo) {

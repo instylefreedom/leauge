@@ -10,5 +10,6 @@ public class UserRequest {
     private String mainLane;
     private String subLane;
     private long userId;
+    private Integer rating;
 
 }

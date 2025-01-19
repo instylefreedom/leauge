@@ -25,8 +25,8 @@
                 {"data": "loss"},
                 {"data": "winRate"},
                 {"data": "winPoint"},
-                {"data": "cwin"},
-                {"data": "close"},
+                // {"data": "cwin"},
+                // {"data": "close"},
             ]
 
             // , "columnDefs" : [{
@@ -125,8 +125,8 @@
                  {"data": "loss"},
                  {"data": "winRate"},
                  {"data": "winPoint"},
-                 {"data": "cwin"},
-                 {"data": "close"},
+                 // {"data": "cwin"},
+                 // {"data": "close"},
              ]
              , "order" : [[1, 'asc']]
 
