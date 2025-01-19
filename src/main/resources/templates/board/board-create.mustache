@@ -1,0 +1,120 @@
+{{>layout/header2}}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
+<style>
+    /*#editor {*/
+    /*    height: 100%;*/
+    /*    !* added these styles *!*/
+    /*    flex: 1;*/
+    /*    overflow-y: auto;*/
+    /*    width: 100%;*/
+    /*}*/
+    .ql-editor{
+        height: 500px;
+    }
+</style>
+<section class="notice">
+    <div class="page-title">
+        <div class="container">
+            <h3>게시글 작성</h3>
+        </div>
+    </div>
+    <div class="col-md-12">
+    <!-- board list area -->
+            <div class="container">
+    <!--            <form action="/board/new" method="post" enctype="multipart/form-data">-->
+    <!--                <input type="hidden" name="galleryName" id = "galleryName" value="comic" />-->
+    <!--                <input type="hidden" name="galleryId" id = "galleryId" value= 1 />-->
+                <select class="form-control kt-select2" id="type" name="type" style="display: inline-block;" >
+                    <option value="">등록 유형</option>
+                    <option value="ADMIN">관리자</option>
+                    <option value="FREE">자유</option>
+                </select>
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요" >
+                </div>
+<!--                    <input type="text" id = "title" name="title" placeholder="제목을 입력해주세요">-->
+                <br>
+                <br>
+                <div class="smarteditor">
+                    <label for="content">내용</label>
+<!--                    <textarea id = "content" name="content" placeholder="게시글을 작성해 주세요." style="width: 100%; min-height: 300px;"></textarea>-->
+<!--                </div>-->
+<!--                <div id="smarteditor">-->
+<!--                    <textarea name="scontent" id="scontent" rows="20" cols="10" placeholder="게시글을 작성해 주세요." style="width: 100%"></textarea>-->
+                    <div id="toolbar-container">
+                          <span class="ql-formats">
+                            <select class="ql-font"></select>
+                            <select class="ql-size"></select>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                          </span>
+                                                <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-script" value="sub"></button>
+                            <button class="ql-script" value="super"></button>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-header" value="1"></button>
+                            <button class="ql-header" value="2"></button>
+                            <button class="ql-blockquote"></button>
+                            <button class="ql-code-block"></button>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-indent" value="-1"></button>
+                            <button class="ql-indent" value="+1"></button>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-direction" value="rtl"></button>
+                            <select class="ql-align"></select>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-link"></button>
+                            <button class="ql-image"></button>
+                            <button class="ql-video"></button>
+                            <button class="ql-formula"></button>
+                          </span>
+                                                <span class="ql-formats">
+                            <button class="ql-clean"></button>
+                          </span>
+                    </div>
+                    <div id="editor"></div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-outline-secondary" id="board-temp">게시글 임시 저장</button>
+                <button type="button" class="btn btn-outline-primary" id="board-save">게시글 저장</button>
+    <!--                <input type="submit"/>-->
+    <!--            </form>-->
+            </div>
+    </div>
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+<script type="text/javascript">
+    // let oEditors = [];
+    // nhn.husky.EZCreator.createInIFrame({
+    //     oAppRef: oEditors,
+    //     elPlaceHolder: "scontent",
+    //     sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+    //     fCreator: "createSEditor2"
+    // });
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: '#toolbar-container',
+        },
+        // modules: { toolbar: true },
+        placeholder: '게시글을 작성해 주세요',
+        theme: 'snow'
+    });
+</script>
+{{>layout/footer}}

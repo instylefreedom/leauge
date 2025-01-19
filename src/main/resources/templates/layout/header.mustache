@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>끌러의 롤톡방 내전</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">-->
+<!--    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />-->
+<!--    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" />
+<!--    <script src="<c:url value='/js/jquery-3.5.1.min.js'/>" charset="utf-8"></script>-->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <link rel="stylesheet" href="/css/background.css" />
+    <link rel="stylesheet" href="/css/adminboard.css" />
+    <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="col-md-12 my_bg my_div">
+    <div class = "divPos">
+        <h1>롤 내전</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/" role="button" class="btn btn-primary">흠으로</a>
+                {{#userName}}
+                    <a href="/board/admin" role="button" class="btn btn-success">관리자 게시판</a>
+                    <a href="/dashboard" role="button" class="btn btn-info">내전 통계</a>
+                    <a href="/game/view" role="button" class="btn btn-success">내전 기록 조회</a>
+                    <a href="/user/update/{{user}}" role="button" class="btn btn-success">내 정보 조회</a>
+                    <!--                        <a href="/user/save" role="button" class="btn btn-primary">유저 등록</a>-->
+                    <a href="/log/save" role="button" class="btn btn-secondary">내전 등록(세트별)</a>
+                {{/userName}}
+                {{#userName}}
+                    <!--                        Logged in as: <span id="user">{{userName}}</span>-->
+                    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+                {{/userName}}
+                {{^userName}}
+                    <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                {{/userName}}
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

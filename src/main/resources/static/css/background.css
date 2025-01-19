@@ -1,0 +1,67 @@
+.my_div {
+    /*width: 500px;*/
+    height: 300px;
+    /*vertical-align: bottom*/
+    /*border: solid;*/
+    }
+.my_bg {
+    background-image: url("../img/bg1.jpg");
+    background-repeat : no-repeat;
+    background-position: center center;
+    /*!*background-size : contain;*!*/
+    /*background-size : auto auto;*/
+}
+
+.tableb {
+    background-color: transparent;
+}
+
+.divPos{
+    position:relative;
+    bottom:1px;
+    left:1px
+}
+
+td.grandmaster {
+    background-color: firebrick;
+    color: white;
+}
+td.master {
+    background-color: rebeccapurple;
+    color: white;
+}
+td.diamond {
+    background-color: mediumturquoise;
+    /*color: silver;*/
+}
+td.emerald {
+     background-color: greenyellow;
+     /*color: silver;*/
+}
+td.platinum {
+  background-color: deepskyblue;
+  /*color: silver;*/
+}
+td.gold {
+   background-color: gold;
+   /*color: silver;*/
+}
+td.silver {
+    background-color: silver;
+    /*color: silver;*/
+}
+td.bronze {
+    background-color: saddlebrown;
+    /*color: silver;*/
+}
+td.iron {
+    background-color: slategray;
+    /*color: silver;*/
+}
+
+
+
+
+
+/*1280 */
+/*720*/

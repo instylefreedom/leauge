@@ -1,0 +1,90 @@
+{{>layout/header}}
+
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="bk-section_title">
+                <div class="row align-items-center justify-content-between" style="margin: 10px 0; background: #fff">
+                    <div class="row-list-head font-normal">
+                        <h2><strong>내전 결과</strong></h2>
+                    </div>
+                </div>
+            </div>
+            <hr style="border: solid 1px black; width:1000px;">
+            <div class="bk-section_title">
+                <div class="row align-items-center justify-content-between" style="margin: 5px 0; background: #fff">
+                    <div class="row-list-head font-normal">
+                        <h5><strong>기본 정보</strong></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-section__content">
+                <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px; width:1000px;">
+                    <tr>
+                        <th style = "width:100px;">게임 날짜<span style="color: red;"> * </span></th>
+                        <td>{{game.playDate}}</td>
+                    </tr>
+                    <tr>
+                        <th style = "width:130px;">시즌(현재3)<span style="color: red;"> * </span></th>
+                        <td>{{game.season}}</td>
+                    </tr>
+                    <tr>
+                        <th style = "width:100px;">라운드<span style="color: red;"> * </span></th>
+                        <td>{{game.round}}</td>
+                    </tr>
+                    <tr>
+                        <th style = "width:100px;">1세트 결과<span style="color: red;"> * </span></th>
+                        <td>{{game.set1}}</td>
+                    </tr>
+                    <tr>
+                        <th style = "width:100px;">2세트 결과<span style="color: red;"> * </span></th>
+                        <td>{{game.set2}}</td>
+                    </tr>
+                    <tr>
+                        <th style = "width:100px;">3세트 결과<span style="color: red;"> * </span></th>
+                        <td>{{game.set3}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="kt-section__content">
+                <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px;width:1000px;">
+                    <tr>
+                        <th scope="col" style="width:10%">인원</th>
+                        <th scope="col" style="width:35%">1팀</th>
+                        <th scope="col" style="width:35%">2팀</th>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>{{game.player1}}</td>
+                        <td>{{game.player6}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>{{game.player2}}</td>
+                        <td>{{game.player7}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>{{game.player3}}</td>
+                        <td>{{game.player8}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>{{game.player4}}</td>
+                        <td>{{game.player9}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>{{game.player5}}</td>
+                        <td>{{game.player10}}</td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">홈으로</a>
+    </div>
+</div>
+
+
+{{>layout/footer}}

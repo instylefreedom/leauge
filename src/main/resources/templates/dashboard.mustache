@@ -1,0 +1,73 @@
+<!--<!DOCTYPE HTML>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>스프링 웹 시작 화면</title>-->
+<!--    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>-->
+
+<!--</head>-->
+<!--<body>-->
+{{>layout/header}}
+
+<div class = "col-md-12 ">
+    <select class="form-control kt-select2" id="season" name="season" style="display: inline-block;width: 210px" >
+        <option value="">검색할 시즌을 골라주세요</option>
+        <option value="1">시즌1</option>
+        <option value="2">시즌2</option>
+        <option value="3">시즌3</option>
+    </select>
+    <button type="button" class="btn btn-primary" id="btn-dashboard">검색</button>
+<!--    <div class="col-md-12 my_bg my_div">-->
+<!--        <div class = "divPos">-->
+<!--            <h1>롤 내전</h1>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-6">-->
+<!--                    {{#userName}}-->
+<!--                        <a href="/board/admin" role="button" class="btn btn-primary">관리자 게시판</a>-->
+<!--                        <a href="/" role="button" class="btn btn-primary">흠으로</a>-->
+<!--                        <a href="/game/view" role="button" class="btn btn-primary">내전 기록 조회</a>-->
+<!--                        <a href="/user/update/{{user}}" role="button" class="btn btn-primary">내 정보 조회</a>-->
+<!--&lt;!&ndash;                        <a href="/user/save" role="button" class="btn btn-primary">유저 등록</a>&ndash;&gt;-->
+<!--                        <a href="/log/save" role="button" class="btn btn-primary">내전 등록(세트별)</a>-->
+<!--                    {{/userName}}-->
+<!--                    {{#userName}}-->
+<!--&lt;!&ndash;                        Logged in as: <span id="user">{{userName}}</span>&ndash;&gt;-->
+<!--                        <a href="/logout" class="btn btn-info active" role="button">Logout</a>-->
+<!--                    {{/userName}}-->
+<!--                    {{^userName}}-->
+<!--                        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>-->
+<!--                    {{/userName}}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--    </div>-->
+    <div class="col-md-12">
+        <div class="w-90">
+            <!--    목록 출력-->
+            <!--    <table class="table table-horizontal table-bordered">-->
+            <table id="userTable" class="table table-bordered">
+                <thead class = "thead-string">
+                <tr>
+<!--                    <th style="display:none">유저id</th>-->
+                    <th></th>
+                    <th>유저명</th>
+                    <th>티어</th>
+                    <th>주라인</th>
+                    <th>부라인</th>
+                    <th>참여경기</th>
+                    <th>승</th>
+                    <th>패</th>
+                    <th>승률</th>
+                    <th>승점</th>
+                    <th>연승</th>
+                    <th>연패</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+{{>layout/footer}}
+<!--</body>-->
+<!--</html>-->

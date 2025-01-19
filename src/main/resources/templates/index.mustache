@@ -1,0 +1,66 @@
+<!--<!DOCTYPE HTML>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>스프링 웹 시작 화면</title>-->
+<!--    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>-->
+
+<!--</head>-->
+<!--<body>-->
+{{>layout/header}}
+
+<div class = "col-md-12 ">
+<!--    <div class="col-md-12 my_bg my_div">-->
+<!--        <div class = "divPos">-->
+<!--            <div class="row">-->
+<!--                <h1>롤 내전</h1>-->
+<!--                <div class="col-md-6">-->
+<!--                    {{#userName}}-->
+<!--                        <a href="/game/view" role="button" class="btn btn-primary">내전 기록 조회</a>-->
+<!--                        <a href="/user/update/{{user}}" role="button" class="btn btn-primary">내 정보 조회</a>-->
+<!--&lt;!&ndash;                        <a href="/user/save" role="button" class="btn btn-primary">유저 등록</a>&ndash;&gt;-->
+<!--                        <a href="/log/save" role="button" class="btn btn-primary">내전 등록(세트별)</a>-->
+<!--                    {{/userName}}-->
+<!--                    {{#userName}}-->
+<!--&lt;!&ndash;                        Logged in as: <span id="user">{{userName}}</span>&ndash;&gt;-->
+<!--                        <a href="/logout" class="btn btn-info active" role="button">Logout</a>-->
+<!--                    {{/userName}}-->
+<!--                    {{^userName}}-->
+<!--                        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>-->
+<!--                    {{/userName}}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--    </div>-->
+    <div class="col-md-12">
+        <div class="w-90">
+            <!--    목록 출력-->
+            <!--    <table class="table table-horizontal table-bordered">-->
+            <h2>안녕하세요 롤 내전 사이트에 오신걸 환영 합니다!</h2>
+            <br>
+            <h3>사이트 사용을 위한 계정 생성 순서</h3>
+            <br>
+            <img src="../img/intro1.png">
+            1. 위 로그인 버튼을 눌러 구글 계정을 선택해서 로그인 을 진행.
+            <br>
+            <img src="../img/intro2.png">
+            2. 로그인 완료 후 '내 정보 조회' 메뉴를 눌러 본인 정보 저장.
+            <br>
+            <br>
+            <h3>주요 기능</h3>
+            <br>
+            홈 : 전체 인원의 유저 정보와 내전 참여 정보 조회
+            <br>
+            내전 기록 조회 : 내전 세트별 참여 인원및 결과 조회
+            <br>
+            내 정보 조회 : 본인 정보 수정
+            <br>
+            내전 등록 : 관리자가 내전 결과 저장
+            <br>
+        </div>
+
+    </div>
+</div>
+{{>layout/footer}}
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,445 @@
+
+{{>layout/header}}
+
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
+<style>
+    .ql-editor{
+        height: 500px;
+    }
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 상세보기 화면</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome 5 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <!-- noto sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="/css/boardDetail.css" />
+    <!-- My javascript -->
+    <script src="/js/app/boardDetail.js"></script>
+
+</head>
+
+<body>
+    <input id="hiddenBoardId" type="hidden" name="hiddenBoardId" value={{board.boardId}}  />
+<!--    <input id="hiddenUserId" type="hidden" name="hiddenUserId" value=userId  />-->
+  <div id="mask"></div>
+  <div class="container my-5">
+    <div class="line my-4" style="width:1150px; margin-left: -20px;">
+      <a id="category_area" >
+        <div onclick="location.href='/board/admin'">공지사항</div>
+      </a>
+    </div>
+
+
+    <!-- 글 상세보기 페이지 머리부분(작성자 프로필이미지, 작성자 닉네임, 활동점수, 작성일자, 조회수, 신고버튼, 수정,삭제버튼) -->
+    <div id="detail_header" class="d-flex justify-content-between align-items-center">
+
+      <div id="writer_profile_image_box">
+        <!-- 글 작성자 프로필이미지 -->
+          {{^board.profilePic}}
+              <img src="">
+          {{/board.profilePic}}
+          {{#board.profilePic}}
+              <img src="{{board.profilePic}}">
+          {{/board.profilePic}}
+      </div>
+
+
+      <div id="writer_profile_body" class="d-flex flex-column w-100 px-2 py-1">
+        <!-- 작성자 닉네임 들어가면 해당 유저의 활동내역을 볼수 있는 페이지로 이동-->
+        <div>
+        <a id="board_writer_nickname" class="pl-2" style="font-size: 18px; color:#212529;">{{board.userName}}</a>
+        </div>
+        <!-- 활동점수,작성일자,조회수 영역-->
+        <div class="d-flex">
+          <!-- 활동점수 -->
+<!--          <div id="board_writer_point" class="mx-2">-->
+<!--            <i class="fa-solid fa-bolt"></i>-->
+<!--            <span>활동점수</span>-->
+<!--          </div>-->
+
+          <span>·</span>
+
+          <!-- 작성일자(형식은 약 ?분전, ?시간전, ?일전, ?년전) -->
+          <div id="board_write_date" class="mx-2">{{board.createdAt}}</div>
+
+          <span>·</span>
+
+          <!-- 조회수 -->
+          <div id="board_views" class="mx-2">
+            <i class="fa-solid fa-eye"></i>
+            <!-- TODO 조회수 작업 필요 -->
+            <span>조회수</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 신고버튼, 수정or삭제버튼 -->
+      <div id="report_edit_delete_area" class="d-flex justify-content-between align-items-center">
+<!--        <span id="btn_board_report" class="ml-auto btn_report">&#x1F6A8;</span>-->
+        <span id="btn_more" class="rounded px-2 py-1" style="margin-left: 30px;"><span id="menu_icon" style="font-size: 20px;">&#8230;</span>
+          <div id="update_or_delete" class="border rounded px-3 py-2">
+            <span onclick="location.href='/board/edit/{{board.boardId}}'">수정하기</span>
+            <span id="board_delete">삭제하기</span>
+          </div>
+        </span>
+      </div>
+    </div>
+    <!-- 글 상세보기 페이지 머리부분 -->
+
+
+    <!-------------------- 글 본문 시작 ------------------>
+    <div id="content_area" class="d-flex flex-column py-2">
+      <!-- 제목 -->
+      <div id="subject" class="mt-5">
+        <h3 id="board_subject">{{board.title}}</h3>
+      </div>
+
+
+      <!-- 글내용 -->
+<!--      <div id="content" class="mt-5" style="font-size:18px;">{{board.content}}</div>-->
+<!--      <textarea name="scontent" id="scontent" rows="20" cols="10" placeholder="게시글을 작성해 주세요." style="width: 100%">{{board.content}}</textarea>-->
+        <div id="editor"></div>
+        <!-- 좋아요 버튼 -->
+      <div class="d-flex justify-content-between mt-4">
+
+        <!-- 좋아요 아이콘 : 눌렀을경우 &#x1F497; 안눌렀을경우 &#129293;-->
+        <!-- TODO 좋아요 취소 분기 처리 방법 작업 필요 -->
+        <div class="ml-auto">
+                <div type="button" id="btn_like">
+                    {{#board.selfLike}}
+                        <span id="like_icon">&#x1F497;</span>
+                    {{/board.selfLike}}
+                    {{^board.selfLike}}
+                        <span id="like_icon">&#129293;</span>
+                    {{/board.selfLike}}
+                    <span id="like_cnt">{{board.like}}</span>
+                </div>
+<!--                <div type="button" id="btn_unlike">-->
+<!--                    <span id="like_icon">&#129293;</span>-->
+<!--                    <span id="like_cnt"></span>-->
+<!--                </div>-->
+        </div>
+      </div>
+    </div>
+
+    <!-------------------- 글 본문 끝 ------------------>
+
+
+    <!---------------------- 댓글 영역 시작 ---------------------->
+    <!-- 댓글 총 갯수 -->
+    <div id="total_comment_cnt" class="my-3">
+    <!--  TODO 동적 변경 필요 + 작업 필요-->
+      <span id="total_comment">{{board.commentCnt}}</span><span>개의 댓글</span>
+    </div>
+
+    <!-- 댓글 작성 칸 -->
+    <form name="addWriteFrm" id="addWriteFrm">
+    <div id="write_comment_area" class="border rounded px-4 py-4">
+      <div class="d-flex w-100">
+        <div class="login_user_profile_img_box">
+          <!-- 로그인되어있는 유저 프로필 이미지 -->
+            {{^board.profilePic}}
+                <img src="">
+            {{/board.profilePic}}
+            {{#board.profilePic}}
+                <img src="{{board.profilePic}}">
+            {{/board.profilePic}}
+        </div>
+            <input id="userid" type="hidden" name="userid" value="${loginMember.id}"  />
+            <input id="cmt_board_num"  type="hidden" name="cmt_board_num" value="${board.id}"  />
+            <input id="nickname"  type="hidden" name="nickname" value="${loginMember.nickname}"  />
+            <input id="parent_write_nickname" type="hidden" name="parent_write_nickname" value="${board.writer.nickname}"/>
+        <div class="ml-3 w-100">
+          <div class="mb-1">내용</div>
+          <textarea id="content" name="content" class="pl-2 py-2" rows="5"></textarea>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-info" id="btn_comment_save">댓글 쓰기</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </form>
+
+    <!-- 로그인 상태 아니라면 해당 영역 노출 -->
+<!--    <div id="write_comment_area" class="border rounded px-4 py-4">-->
+<!--      <div class="d-flex w-100 align-items-end pt-3 pl-2" style="font-size:18px;">-->
+<!--        <span>&#127760; 댓글을 쓰려면&nbsp;</span>-->
+<!--        <a style="color:#208EC9; text-decoration: underline; font-weight: bold" onclick="no_login_comment()"> 로그인 </a>-->
+<!--        <span>이 필요합니다</span>-->
+<!--      </div>-->
+<!--      <div class="d-flex justify-content-end mt-4">-->
+<!--        <button type="button" disabled="disabled" class="btn btn-secondary">댓글 쓰기</button>-->
+<!--      </div>-->
+<!--	  </div>-->
+    <!---------------------- 댓글쓰기 영역 끝 ---------------------->
+
+
+    <!---------------------- 댓글리스트 영역(반복문) 시작 ---------------------->
+    {{#comment}}
+    <!-- 댓글 시작 -->
+    <div class="comment_area pb-4 mt-2">
+      <div class="comment px-3 py-4" id="">
+
+          <input id="hiddenCommentId" type="hidden" name="hiddenCommentId" value={{commentId}}  />
+        <!-- 댓글작성자 정보 -->
+        <div class="d-flex justify-content-between align-items-center comment_writer_info">
+          <!-- 프로필 이미지 -->
+          <div class="comment_writer_profile_img_box mr-2">
+              {{^profilePic}}
+                  <img src="">
+              {{/profilePic}}
+              {{#profilePic}}
+                  <img src="{{profilePic}}">
+              {{/profilePic}}
+          </div>
+
+          <!-- 닉네임 / 활동점수 / 작성일자 -->
+          <div class="d-flex flex-column w-100">
+            <div class="comment_writer_nickname" id ={{commentId}} style="width:20%;">{{userName}}</div>
+            <div class="mt-1">
+<!--              &lt;!&ndash; 댓글작성자 활동점수 &ndash;&gt;-->
+<!--              <span class="mr-2">-->
+<!--                <i class="fa-solid fa-bolt"></i>-->
+<!--                <span>활동점수</span>-->
+<!--              </span>-->
+
+<!--              <span>·</span>-->
+
+              <!-- 댓글작성일자 -->
+              <span class="ml-2">{{createdAt}}</span>
+            </div>
+          </div>
+
+          <!-- 좋아요 / ...버튼 -->
+          <div  style="display: flex;">
+              <div class="comment_like" style="width: 35px; margin-top: 9px;">
+                    <!-- 댓글 좋아요 아이콘, 눌렀을경우 &#x1F497; 안눌렀을경우 &#129293;-->
+                  {{#selfLike}}
+                      <span class="comment_like_icon">&#x1F497;</span>
+                  {{/selfLike}}
+                  {{^selfLike}}
+                      <span class="comment_like_icon">&#129293;</span>
+                  {{/selfLike}}
+                  <!-- 댓글 좋아요 갯수 -->
+                  <span class="comment_like_cnt">{{like}}</span>
+
+
+	          </div>
+	          <span class="rounded px-2 py-1 comment_btn_more">
+	            <span id="menu_icon" style="font-size: 20px;">&#8230;</span>
+          		<div class="border rounded px-3 py-2 comment_update_or_delete">
+	            	<span class="btn_comment_edit">수정하기</span>
+	            	<span class="comment_delete">삭제하기</span>
+          		</div>
+          	  </span>
+          </div>
+        </div>
+
+        <!-- 댓글 내용 -->
+        <div class="my-3 basic_comment_content">
+			  <div class = "detail_comment" >{{content}}</div>
+
+			  <!-- 댓글수정 시 수정 칸 -->
+ 	        <div class="ml-3 w-100 comment_edit">
+	          <textarea class="pl-2 py-2 content rounded" rows="5">{{content}}</textarea>
+	          <div class="d-flex justify-content-end mt-2">
+	            <input type="hidden" class="comment_id" value="{{commentId}}"/>
+	            <button type="button" class="btn_edit_comment btn btn-info mr-3">수정</button>
+	            <button type="button" class="btn_comment_edit_close btn btn-light border rounded">취소</button>
+	          </div>
+	        </div>
+        </div>
+
+
+<!--        <div class="d-flex">-->
+<!--          &lt;!&ndash; 대댓글이 있는 경우 보이기 시작 / 대댓글 없는경우 안보여야 함 &ndash;&gt;-->
+<!--          <div class="btn_comment_toggle big_comment_hide mr-3">-->
+<!--            <span><i class="fa-solid fa-chevron-up"></i>&nbsp;댓글 모두 숨기기</span>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; 대댓글갯수  &ndash;&gt;두-->
+<!--          <div class="btn_comment_toggle big_comment_show mr-3">-->
+<!--            <span><i class="fa-solid fa-chevron-down"></i>&nbsp;댓글&nbsp;<span>1</span>개 보기</span>-->
+<!--          </div>-->
+<!--          &lt;!&ndash; 대댓글이 있는 경우일경우 보이기 끝 대댓글 없는경우 안보여야 함 끝 &ndash;&gt;-->
+
+<!--          &lt;!&ndash; 댓글쓰기 &ndash;&gt;-->
+<!--          <div class="btn_write_comment">댓글쓰기</div>-->
+<!--        </div>-->
+      </div>
+
+<!--      &lt;!&ndash;------------------------------------------------- 대댓글 영역 시작 -------------------------------------&ndash;&gt;-->
+<!--      <div class="d-flex flex-column align-items-end">-->
+
+<!--        &lt;!&ndash;------------------------------- 대댓글 쓰기영역 시작 ----------------------------&ndash;&gt;-->
+<!--        <div class="big_comment_write_area pl-4">-->
+<!--          <div class="login_user_profile_img_box">-->
+<!--            &lt;!&ndash; 로그인되어있는 유저 프로필 이미지 &ndash;&gt;-->
+<!--            <img src="<%=ctxPath %>/resources/images/${loginMember.profileImage}"/>-->
+<!--          </div>-->
+
+<!--          <div class="ml-3 w-100">-->
+<!--            <div class="mb-1">로그인 되어있는 유저 닉네임</div>-->
+<!--            <input type="hidden" value="${comment.id}"/>-->
+<!--    		    <textarea class="pl-2 py-2 content2" name="content" rows="5"></textarea>-->
+<!--            <div class="d-flex justify-content-end mt-2">-->
+<!--              <button type="button" class="btn_big_comment_close btn btn-light border rounded mr-3">취소</button>-->
+<!--              <input type="hidden" class="parentId" name="parentId" value="${comment.id}"/>-->
+<!--              <button type="button" class="btn_big_comment_write btn btn-info">댓글 쓰기</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;--------------------------------- 대댓글 쓰기영역 끝 ---------------------------------&ndash;&gt;-->
+
+
+<!--        &lt;!&ndash;--------------------------------- 대댓글리스트(반복문) 시작 ---------------------------------&ndash;&gt;-->
+
+<!--        <div class="big_comment_area pl-4 pt-4" id="">-->
+<!--          &lt;!&ndash; 대댓글작성자의 프로필이미지, 활동점수, 댓글작성일자 &ndash;&gt;-->
+<!--          <div class="big_comment_writer_info d-flex justify-content-between align-items-center">-->
+<!--            <div class="big_comment_writer_profile_img_box mr-3">-->
+<!--              <img src="${childComment.writer.profileImage}"/>-->
+<!--            </div>-->
+
+<!--            <div class="d-flex flex-column w-100">-->
+<!--              <div class="comment_writer_nickname" id="${childComment.id}" style="width:40%;">대댓 작성자 닉네임</div>-->
+<!--              <div class="mt-1">-->
+<!--                &lt;!&ndash; 대댓글작성자 활동점수 &ndash;&gt;-->
+<!--                <span class="mr-2">-->
+<!--                  <i class="fa-solid fa-bolt"></i>-->
+<!--                  <span>활동점수</span>-->
+<!--                </span>-->
+
+<!--                <span>·</span>-->
+<!--                &lt;!&ndash; 대댓글작성일자 &ndash;&gt;-->
+<!--                <span class="ml-2">작성일자</span>-->
+<!--              </div>-->
+<!--            </div>-->
+
+
+
+<!--            <div style="display: flex;">-->
+<!--              <div class="big_comment_like" style="width: 35px; margin-top: 9px;">-->
+<!--                &lt;!&ndash; 댓글 좋아요 아이콘, 눌렀을경우 &#x1F497; 안눌렀을경우 &#129293;&ndash;&gt;-->
+<!--                <span class="comment_like_icon">&#x1F497;</span>-->
+<!--              &lt;!&ndash; 댓글 좋아요 갯수 &ndash;&gt;-->
+<!--              <span id="${childComment.likeCount}" class="comment_like_cnt">0</span>-->
+<!--            </div>-->
+<!--            <span class="rounded px-2 py-1 comment_btn_more" style="margin-right: 15px;"><span id="menu_icon" style="font-size: 20px;">&#8230;</span>-->
+<!--              <div class="border rounded px-3 py-2 comment_update_or_delete">-->
+<!--                <span class="btn_comment_edit">수정하기</span>-->
+<!--                <span class="comment_delete">삭제하기</span>-->
+<!--              </div>-->
+<!--              </span>-->
+<!--            </div>-->
+<!--              &lt;!&ndash; 댓글 신고,수정,삭제 끝 &ndash;&gt;-->
+<!--          </div>-->
+
+
+<!--          &lt;!&ndash; 대댓글내용 &ndash;&gt;-->
+<!--          <div class="my-3 special_comment_content" id="${childComment.content}">-->
+<!--            <div class="detail_comment my-3" >대댓글 내용</div>-->
+
+<!--            &lt;!&ndash; 대댓글수정 에디터 &ndash;&gt;-->
+<!--            <div class="ml-3 w-100 comment_edit">-->
+<!--                    <input type="hidden" value="${childComment.id}"/>-->
+<!--              <textarea class="pl-2 py-2 content rounded" rows="5">${childComment.content}</textarea>-->
+<!--              <div class="d-flex justify-content-end mt-2">-->
+<!--                <input type="hidden" class="childComment_id" value="${childComment.id}"/>-->
+<!--                <button type="button" class="btn_edit_comment btn btn-info mr-3">수정</button>-->
+<!--                <button type="button" class="btn_comment_edit_close btn btn-light border rounded">취소</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      &lt;!&ndash;--------------------------------- 대댓글리스트(반복문) 끝 ---------------------------------&ndash;&gt;-->
+
+<!--      </div>-->
+<!--      &lt;!&ndash;--------------------------------------- 대댓글 영역 끝 ----------------------------------------&ndash;&gt;-->
+
+        <hr />
+    <!--------------------댓글 반복문 끝 -------------------->
+    {{/comment}}
+  </div>
+</div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+<script>
+
+    var quill = new Quill("#editor", {
+        modules: { toolbar: null },
+        readOnly: true,
+        placeholder: '게시글을 작성해 주세요',
+        theme: 'snow'
+    });
+
+    <!--const value = {{board.content}}-->
+    <!--contentToHTML()-->
+    <!--const delta =   quill.clipboard.convert({html: value})-->
+    // quill.setContents(delta, 'silent')
+    function contentToHTML(content) {
+        return content.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&#x3D;","=").replaceAll("&quot;","'");
+    }
+
+    let board_content = "{{board.content}}";
+    board_content = contentToHTML(board_content);
+    console.log(board_content);
+    const delta =   quill.clipboard.convert({html: board_content})
+    quill.setContents(delta, 'silent')
+    // quill.setText(board_content);
+    <!--console.log();-->
+    <!--quill.setText({{board.content}})-->
+
+    // let oEditors = [];
+    //
+    // smartEditor = function() {
+    //     nhn.husky.EZCreator.createInIFrame({
+    //         oAppRef: oEditors,
+    //         elPlaceHolder: "scontent", //textarea에 부여한 아이디와 동일해야한다.
+    //         sSkinURI: "/smarteditor/SmartEditor2Skin.html", //자신의 프로젝트에 맞게 경로 수
+    //         fCreator: "createSEditor2",
+    //         fOnAppLoad : function(){
+    //             //예제 코드
+    //             //oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+    //             var editor = oEditors.getById["scontent"];
+    //             editor.exec("DISABLE_WYSIWYG");
+    //             editor.exec("DISABLE_ALL_UI");
+    //         },
+    //
+    //     })
+    // }
+    //
+    // $(document).ready(function() {
+    //     //스마트에디터 적용
+    //     smartEditor();
+    //     //값 불러오기
+    //     function preview(){
+    //         // 에디터의 내용을 textarea에 적용
+    //         oEditors.getById["scontent"].exec("UPDATE_CONTENTS_FIELD", []);
+    //         // textarea 값 불러오기
+    //         var content = document.getElementById("scontent").value;
+    //         alert(content);
+    //         return;
+    //     }
+    //
+    // })
+</script>
+{{>layout/footer}}

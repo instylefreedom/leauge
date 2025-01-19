@@ -1,0 +1,220 @@
+{{>layout/header2}}
+
+
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="bk-section_title">
+                <div class="row align-items-center justify-content-between" style="margin: 10px 0; background: #fff">
+                    <div class="row-list-head font-normal">
+                        <h2><strong>내전 등록</strong></h2>
+                    </div>
+                </div>
+            </div>
+        <hr style="border: solid 1px black; width:1000px;">
+        <div class="bk-section_title">
+            <div class="row align-items-center justify-content-between" style="margin: 5px 0; background: #fff">
+                <div class="row-list-head font-normal">
+                    <h5><strong>기본 정보</strong></h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-section__content">
+            <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px; width:1000px;">
+                <tr>
+                    <th style = "width:100px;">게임 날짜<span style="color: red;"> * </span></th>
+                    <td><input type="text" id="gameDate" class="form-control" placeholder="게임 플레이 날짜를 적어주세요(예시 20240301)" value="" name="university_name" /></td>
+                </tr>
+                <tr>
+                    <th style = "width:130px;">시즌(현재3)<span style="color: red;"> * </span></th>
+                    <td><input type="text" id="season" class="form-control" placeholder="이번 시즌을 적어주세요(다음 토너먼트까지 바뀌지 않음)" value="" name="university_name" /></td>
+                </tr>
+                <tr>
+                    <th style = "width:100px;">라운드<span style="color: red;"> * </span></th>
+                    <td><input type="text" id="round" name="round" placeholder="이번 게임 라운드를 적어주세요" value=""  class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th style = "width:100px;">1세트 결과<span style="color: red;"> * </span></th>
+<!--                    <td><input type="text" id="team2" name="team2" placeholder="2팀 승패 결과를 적어주세요" value=""  class="form-control" /></td>-->
+                    <td>
+                        <select class="form-control kt-select2" id="set1" name="set1" style="display: inline-block;" >
+                            <option value="">1세트 승리팀을 골라 주세요</option>
+                            <option value="1">1팀</option>
+                            <option value="2">2팀</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th style = "width:100px;">2세트 결과<span style="color: red;"> * </span></th>
+                    <!--                    <td><input type="text" id="team2" name="team2" placeholder="2팀 승패 결과를 적어주세요" value=""  class="form-control" /></td>-->
+                    <td>
+                        <select class="form-control kt-select2" id="set2" name="set2" style="display: inline-block;" >
+                            <option value="">2세트 승리팀을 골라 주세요</option>
+                            <option value="1">1팀</option>
+                            <option value="2">2팀</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th style = "width:100px;">3세트 결과<span style="color: red;"> * </span></th>
+                    <!--                    <td><input type="text" id="team2" name="team2" placeholder="2팀 승패 결과를 적어주세요" value=""  class="form-control" /></td>-->
+                    <td>
+                        <select class="form-control kt-select2" id="set3" name="set3" style="display: inline-block;" >
+                            <option value="">3세트 승리팀을 골라 주세요</option>
+                            <option value="1">1팀</option>
+                            <option value="2">2팀</option>
+                        </select>
+                    </td>
+                </tr>
+<!--                <tr>-->
+<!--                    <th style = "width:100px;">세트<span style="color: red;"> * </span></th>-->
+<!--                    <td><input type="text" id="set" name="set" placeholder="세트를 입력하세요" value=""  class="form-control" /></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th style = "width:100px;">1팀 결과<span style="color: red;"> * </span></th>-->
+<!--&lt;!&ndash;                    <td><input type="text" id="team1" name="team1" placeholder="1팀 승패 결과를 적어주세요" value=""  class="form-control" /></td>&ndash;&gt;-->
+<!--                    <td>-->
+<!--                        <select class="form-control kt-select2" id="team1" name="team1" style="display: inline-block;" >-->
+<!--                            <option value="">1팀 승패 결과를 적어주세요</option>-->
+<!--                            <option value="WIN">WIN</option>-->
+<!--                            <option value="LOSE">LOSE</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th style = "width:100px;">2팀 결과<span style="color: red;"> * </span></th>-->
+<!--&lt;!&ndash;                    <td><input type="text" id="team2" name="team2" placeholder="2팀 승패 결과를 적어주세요" value=""  class="form-control" /></td>&ndash;&gt;-->
+<!--                    <td>-->
+<!--                        <select class="form-control kt-select2" id="team2" name="team2" style="display: inline-block;" >-->
+<!--                            <option value="">2팀 승패 결과를 적어주세요</option>-->
+<!--                            <option value="WIN">WIN</option>-->
+<!--                            <option value="LOSE">LOSE</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                </tr>-->
+
+            </table>
+        </div>
+        <div class="kt-section__content">
+            <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px;width:1000px;">
+                    <tr>
+                        <th scope="col" style="width:10%">인원</th>
+                        <th scope="col" style="width:35%">1팀</th>
+                        <th scope="col" style="width:35%">2팀</th>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player1" name="player1" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p1" style="display:none"></label>
+                            <input list="player1" name="p1" id="p1" class="form-control kt-select2"/>
+                            <datalist id="player1">
+                            </datalist>
+                        </td>
+<!--                        <td><input type="text" id="player1" placeholder="내전 참여 인원을 입력하세요" value=""  class="form-control" /></td>-->
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player6" name="player6" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p6" style="display:none"></label>
+                            <input list="player6" name="p6" id="p6" class="form-control kt-select2"/>
+                            <datalist id="player6">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player2" name="player2" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p2" style="display:none"></label>
+                            <input list="player2" name="p2" id="p2" class="form-control kt-select2"/>
+                            <datalist id="player2">
+                            </datalist>
+                        </td>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player7" name="player7" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p7" style="display:none"></label>
+                            <input list="player7" name="p7" id="p7" class="form-control kt-select2"/>
+                            <datalist id="player7">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player3" name="player3" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p3" style="display:none"></label>
+                            <input list="player3" name="p3" id="p3" class="form-control kt-select2"/>
+                            <datalist id="player3">
+                            </datalist>
+                        </td>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player8" name="player8" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p8" style="display:none"></label>
+                            <input list="player8" name="p8" id="p8" class="form-control kt-select2"/>
+                            <datalist id="player8">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player4" name="player4" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p4" style="display:none"></label>
+                            <input list="player4" name="p4" id="p4" class="form-control kt-select2"/>
+                            <datalist id="player4">
+                            </datalist>
+                        </td>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player9" name="player9" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p9" style="display:none"></label>
+                            <input list="player9" name="p9" id="p9" class="form-control kt-select2"/>
+                            <datalist id="player9">
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player5" name="player5" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p5" style="display:none"></label>
+                            <input list="player5" name="p5" id="p5" class="form-control kt-select2"/>
+                            <datalist id="player5">
+                            </datalist>
+                        </td>
+                        <td>
+<!--                            <select class="form-control kt-select2" id="player10" name="player10" style="display: inline-block;" >-->
+<!--                                <option value="">내전 참여 인원을 입력하세요</option>-->
+<!--                            </select>-->
+                            <label for="p10" style="display:none"></label>
+                            <input list="player10" name="p10" id="p10" class="form-control kt-select2"/>
+                            <datalist id="player10">
+                            </datalist>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button type="button" class="btn btn-primary" id="btn-log-save">등록</button>
+    </div>
+</div>
+
+{{>layout/footer}}
