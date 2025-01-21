@@ -181,6 +181,7 @@ public class UserService {
                     .tier(tier)
                     .mainLane(d.get("main_lane"))
                     .subLane(d.get("sub_lane"))
+                    .rating(Integer.valueOf(String.valueOf(d.get("rating"))))
                     .matchNumber(Integer.valueOf(String.valueOf(d.get("matchCount"))))
                     .win(Integer.valueOf(String.valueOf(d.get("winCount"))))
                     .loss(Integer.valueOf(String.valueOf(d.get("loseCount"))))

@@ -59,6 +59,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 "     when rating > 1980 and rating <= 2100 then 1  else null end as bracket \n" +
                 ", u.main_lane \n" +
                 ", u.sub_lane \n" +
+                ", u.rating  \n" +
                 ", ifnull(g.matchCount,0) matchCount\n" +
                 ", ifnull(g.winCount,0) winCount\n" +
                 ", ifnull(g.loseCount,0) loseCount\n" +
