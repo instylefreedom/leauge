@@ -158,7 +158,7 @@ public class LogService {
     public void calculateUserRating(User user, GameResult result) {
         // 점수제 기반 +- 처리
         // 브~골 + 1티어 점수 변동
-        if(user.getRating() <= 1780){
+        if(user.getRating() <= 1980){
             if((user.getRating()>=1560 && user.getRating()<=1580) || (user.getRating()>=1660 && user.getRating()<=1680) || (user.getRating()>=1760 && user.getRating()<=1780)) {
                 if(result.equals(GameResult.WIN)) {
                     user.setRating(user.getRating()+2);
