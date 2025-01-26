@@ -3,17 +3,12 @@ package lol.example.league.controller;
 import jakarta.servlet.http.HttpSession;
 import lol.example.league.config.auth.dto.LoginUser;
 import lol.example.league.config.auth.dto.SessionUser;
-import lol.example.league.dto.response.BoardResponse;
-import lol.example.league.dto.response.CommentResponse;
-import lol.example.league.dto.response.GameResponse;
-import lol.example.league.dto.response.UserResponse;
+import lol.example.league.dto.response.*;
 import lol.example.league.entity.Role;
 import lol.example.league.entity.User;
-import lol.example.league.service.BoardService;
-import lol.example.league.service.CommentService;
-import lol.example.league.service.GameService;
-import lol.example.league.service.UserService;
+import lol.example.league.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +27,7 @@ public class IndexController {
     private final HttpSession httpSession;
     private final BoardService boardService;
     private final CommentService commentService;
+    private final TeamMatchService teamMatchService;
 
 
 // ========================= 내전 통계 조회 ========================
@@ -226,22 +222,27 @@ public class IndexController {
 
     }
 
-//    @GetMapping("/board/free")
-//    public String viewFreeBoard(Model model, @LoginUser SessionUser user){
-//        if(user != null){
-////            GameResponse board = gameService.getGameDataDetail();
-////            model.addAttribute("board",board);
-//        }
-//        return "free_board";
-//    }
 
-//    @GetMapping("/board/detail/{boardId}")
-//    public String viewBoardDetail(@PathVariable(value="boardId") Long boardId, Model model, @LoginUser SessionUser user){
-//        if(user != null){
-////            GameResponse board = gameService.getGameDataDetail();
-////            model.addAttribute("board",board);
-//        }
-//        return "board_detail";
-//    }
+
+// ========================= 매치 메이킹 ========================
+    @GetMapping("/match/start")
+    public String matchStart() {
+        return "match/match-start";
+    }
+
+    @GetMapping("/match/result")
+    public String matchResult(Model model) {
+
+        String rule = teamMatchService.getRule();
+        UserMatchResponse response = teamMatchService.getMatchResult();
+        model.addAttribute("rule",rule);
+        model.addAttribute("team1Score",response.getTeam1Total());
+        model.addAttribute("team2Score",response.getTeam2Total());
+        model.addAttribute("team1",response.getTeam1());
+        model.addAttribute("team2",response.getTeam2());
+
+        return "match/match-result";
+    }
+
 
 }

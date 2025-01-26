@@ -83,43 +83,47 @@
      },
 
      logSave : function(){
-         var data = {
-             gameDate : $('#gameDate').val(),
-             season : $('#season').val(),
-             round : $('#round').val(),
-             // set : $('#set').val(),
-             // team1 : $('#team1').val(),
-             // team2 : $('#team2').val(),
-             set1 : $('#set1').val(),
-             set2 : $('#set2').val(),
-             set3 : $('#set3').val(),
-             player1 : $('#p1').val(),
-             player2 : $('#p2').val(),
-             player3 : $('#p3').val(),
-             player4 : $('#p4').val(),
-             player5 : $('#p5').val(),
-             player6 : $('#p6').val(),
-             player7 : $('#p7').val(),
-             player8 : $('#p8').val(),
-             player9 : $('#p9').val(),
-             player10 : $('#p10').val()
+        if(confirm("내전 기록을 저장 하시곘습니까?")) {
+            var data = {
+                gameDate: $('#gameDate').val(),
+                season: $('#season').val(),
+                round: $('#round').val(),
+                // set : $('#set').val(),
+                // team1 : $('#team1').val(),
+                // team2 : $('#team2').val(),
+                set1: $('#set1').val(),
+                set2: $('#set2').val(),
+                set3: $('#set3').val(),
+                player1: $('#p1').val(),
+                player2: $('#p2').val(),
+                player3: $('#p3').val(),
+                player4: $('#p4').val(),
+                player5: $('#p5').val(),
+                player6: $('#p6').val(),
+                player7: $('#p7').val(),
+                player8: $('#p8').val(),
+                player9: $('#p9').val(),
+                player10: $('#p10').val()
 
-         };
+            };
 
-         $.ajax({
-             type:'POST',
-             url:'/api/log/save/data',
-             dataType:'text',
-             contentType:'application/json; charset=utf-8',
-             data: JSON.stringify(data)
-         }).done(function(data){
-             // alert('내전 기록이 등록 되었습니다.');
-             console.log(data);
-             alert(data);
-             window.location.href='/';
-         }).fail(function(error) {
-             alert(JSON.stringify(error));
-         });
+            $.ajax({
+                type: 'POST',
+                url: '/api/log/save/data',
+                dataType: 'text',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (data) {
+                // alert('내전 기록이 등록 되었습니다.');
+                console.log(data);
+                alert(data);
+                window.location.href = '/';
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        } else {
+            alert("제출 취소")
+        }
      },
 
      logDelete : function(){

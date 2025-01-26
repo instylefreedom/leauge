@@ -1,0 +1,74 @@
+{{>layout/header2}}
+
+
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form>
+            <div class="bk-section_title">
+                <div class="row align-items-center justify-content-between" style="margin: 10px 0; background: #fff">
+                    <div class="row-list-head font-normal">
+                        <h2><strong>팀짜기</strong></h2>
+                    </div>
+                </div>
+            </div>
+            <hr style="border: solid 1px black; width:1000px;">
+            <div class="bk-section_title">
+                <div class="row align-items-center justify-content-between" style="margin: 5px 0; background: #fff">
+                    <div class="row-list-head font-normal">
+                        <h5><strong>{{rule}}</strong></h5>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="kt-section__content">
+                <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px; width:1000px;">
+                    <tr>
+                        <th style = "width:100px;">Team Legend 평균 점수<span style="color: red;"> * </span></th>
+                        <th style = "width:130px;">Team Rise 평균 점수<span style="color: red;"> * </span></th>
+                    </tr>
+                    <tr>
+                        <td>{{team1Score}}</td>
+                        <td>{{team2Score}}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="kt-section__content">
+                <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px;width:1000px;">
+                    <tr>
+                        <th scope="col" style="width:35%">Team Legend</th>
+                        <th scope="col" style="width:35%">랭크</th>
+                        <th scope="col" style="width:35%">점수</th>
+                    </tr>
+                    {{#team1}}
+                        <tr>
+                            <td>{{userName}}</td>
+                            <td>{{tier}}{{bracket}}</td>
+                            <td>{{rating}}</td>
+                        </tr>
+                    {{/team1}}
+                </table>
+            </div>
+            <div class="kt-section__content">
+                <table class="table table-bordered table-hover m-table" style="text-align: left; margin-top:15px;width:1000px;">
+                    <tr>
+                        <th scope="col" style="width:35%">Team Rise</th>
+                        <th scope="col" style="width:35%">랭크</th>
+                        <th scope="col" style="width:35%">점수</th>
+                    </tr>
+                    {{#team2}}
+                        <tr>
+                            <td>{{userName}}</td>
+                            <td>{{tier}}{{bracket}}</td>
+                            <td>{{rating}}</td>
+                        </tr>
+                    {{/team2}}
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{>layout/footer}}
