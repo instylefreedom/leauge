@@ -33,6 +33,7 @@ public class ExcelController {
     private final SamSungISGLS samSungISGLS;
 
     private final SamsungPOD samsungPOD;
+    private final CGPOD cgpodService;
 
     @GetMapping("/api/hwasun/excel")
     public void getUserName() {
@@ -74,8 +75,13 @@ public class ExcelController {
         samSungISGLS.getISGLS();
     }
 
-    @GetMapping("/api/samsung/ㄹ")
+    @GetMapping("/api/samsung/pod")
     public void getSamsungPOD() {
         samsungPOD.getPOD();
+    }
+
+    @GetMapping("/api/cg/pod")
+    public void getCGPOD() {
+        cgpodService.getPOD();
     }
 }

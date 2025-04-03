@@ -187,8 +187,7 @@ public class UserService {
                     .loss(Integer.valueOf(String.valueOf(d.get("loseCount"))))
                     .winRate(rate)
                     .winPoint(Integer.valueOf(String.valueOf(d.get("point"))))
-//                    .cwin(cwin)
-//                    .close(close)
+                    .lastPlayDate(String.valueOf(d.get("created_at")))
                     .build();
             response.add(data);
 //            cwin=0;

@@ -1,5 +1,6 @@
 package lol.example.league.dto.response;
 
+import lol.example.league.entity.Role;
 import lol.example.league.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,8 @@ public class UserResponse {
     private Integer cwin;
     private Integer close;
     private Integer rating;
+    private Boolean admin;
+    private String lastPlayDate;
 
 
 //    public UserResponse(User user, Integer matchNumber, Integer win, Integer loss, String winRate, Integer winPoint){
@@ -66,5 +69,11 @@ public class UserResponse {
         }
         this.picture= user.getPicture();
         this.rating = user.getRating();
+        if(user.getRole().equals(Role.ADMIN)){
+            this.admin = true;
+        }
+        else{
+            this.admin = false;
+        }
     }
 }

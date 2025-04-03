@@ -78,6 +78,9 @@ public class PatientOPDTO {
         private String CA19;
         private String ELF;
         private String IGSR15;
+        //췌장 자동화 항목 추가
+        private Double Amylase;
+        private Double Lipase;
 
     }
 
@@ -99,6 +102,9 @@ public class PatientOPDTO {
         private List<PatientData> ALT;
         private List<PatientData> Cr;
         private List<PatientData> HS_CRP;
+        //췌장 자동화 항목 추가
+        private List<PatientData> Amylase;
+        private List<PatientData> Lipase;
 
 
         public static PatientPODData create (){
@@ -117,6 +123,8 @@ public class PatientOPDTO {
                     .ALT(new ArrayList<>())
                     .Cr(new ArrayList<>())
                     .HS_CRP(new ArrayList<>())
+                    .Amylase(new ArrayList<>())
+                    .Lipase(new ArrayList<>())
                     .build();
         }
     }
@@ -155,6 +163,9 @@ public class PatientOPDTO {
         private PODSet ALT;
         private PODSet Cr;
         private PODSet HS_CRP;
+        //췌장 자동화 항목 추가
+        private PODSet Amylase;
+        private PODSet Lipase;
 
 
     }

@@ -26,6 +26,7 @@
                 {"data": "loss"},
                 {"data": "winRate"},
                 {"data": "winPoint"},
+                {"data": "lastPlayDate"},
                 // {"data": "cwin"},
                 // {"data": "close"},
             ]
@@ -127,6 +128,7 @@
                  {"data": "loss"},
                  {"data": "winRate"},
                  {"data": "winPoint"},
+                 {"data": "lastPlayDate"},
                  // {"data": "cwin"},
                  // {"data": "close"},
              ]

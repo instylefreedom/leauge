@@ -164,23 +164,25 @@ public class LogService {
                     user.setRating(user.getRating()+2);
                 }
                 else{
-                    user.setRating(user.getRating()-4);
+                    user.setRating(user.getRating()-2);
                 }
             }
             else {
-                if(result.equals(GameResult.WIN)) {
-                    user.setRating(user.getRating()+3);
-                }
-                else{
-                    user.setRating(user.getRating()-2);
-                }
+                    if (result.equals(GameResult.WIN)) {
+                        user.setRating(user.getRating() + 3);
+                    } else {
+                        //2025-02-15 1480 이하로는 내려가지 않게 변경
+                        if(user.getRating() > 1480) {
+                            user.setRating(user.getRating() - 2);
+                        }
+                    }
             }
         }
 
         // 플레 이상
         else {
             if(result.equals(GameResult.WIN)) {
-                user.setRating(user.getRating()+4);
+                user.setRating(user.getRating()+2);
             }
             else{
                 user.setRating(user.getRating()-2);

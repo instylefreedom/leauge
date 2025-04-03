@@ -90,7 +90,7 @@ public class IndexController {
             UserResponse data = userService.findUserResponseByName(userName);
             model.addAttribute("user",data);
 
-            return "user/user-update";
+            return "user/admin-update";
         }
 //        Long id = userService.findByEmail(user.getEmail());
         model.addAttribute("userName", user.getName());
@@ -243,6 +243,15 @@ public class IndexController {
 
         return "match/match-result";
     }
+
+
+//    @GetMapping("/test/liver")
+//    public void livertest(Model model) {
+//
+//        teamMatchService.liverTest();
+//
+//    }
+
 
 
 }
