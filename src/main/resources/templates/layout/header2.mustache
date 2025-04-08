@@ -1,5 +1,118 @@
 <!DOCTYPE HTML>
 <html>
+
+<style>
+    @font-face {
+        font-family: 'circularSub';
+        src: url('/fonts/circularSub.woff2') format('woff2'),
+        url('/fonts/circularSub.woff') format('woff'),
+        url('/fonts/circularSub.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+    :root {
+        --dark-bg: #1a1a1a;
+        --dark-secondary: #2a2a2a;
+        --dark-hover: #3a3a3a;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --accent: #4CAF50;
+        --accent-hover: #45a049;
+        --border: #333;
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: var(--text-primary);
+        font-family: 'circularSub', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dark-header {
+        background-color: var(--dark-secondary);
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .logo h1 {
+        font-size: 1.8rem;
+        margin: 0;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .main-nav {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 2rem;
+        gap: 0.5rem;
+    }
+
+    .nav-link {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+        background-color: var(--dark-hover);
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+
+    .nav-link.primary {
+        background-color: var(--accent);
+    }
+
+    .nav-link.primary:hover {
+        background-color: var(--accent-hover);
+    }
+
+    .nav-link.active {
+        background-color: var(--dark-hover);
+        font-weight: 500;
+    }
+
+    .nav-link.logout {
+        margin-left: auto;
+        background-color: #555;
+    }
+
+    .nav-link.google-login {
+        background-color: #4285F4;
+    }
+
+    @media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .main-nav {
+            margin-left: 0;
+            margin-top: 1rem;
+            width: 100%;
+        }
+    }
+
+</style>
+
 <head>
     <title>롤톡방 내전</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -40,15 +153,27 @@
     <link rel="stylesheet" href="/css/adminboard.css" />
     <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
-<body>
-<div class="col-md-12 my_bg my_div">
-    <div class = "divPos">
-        <h1>롤 내전</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <a href="/" role="button" class="btn btn-primary">흠으로</a>
-            </div>
+
+<header class="dark-header">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>롤 내전</h1>
         </div>
+        <nav class="main-nav">
+            <a href="/" class="nav-link primary">홈으로</a>
+        </nav>
     </div>
-    <br>
-</div>
+</header>
+
+<!--<body>-->
+<!--<div class="col-md-12 my_bg my_div">-->
+<!--    <div class = "divPos">-->
+<!--        <h1>롤 내전</h1>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--                <a href="/" role="button" class="btn btn-primary">흠으로</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br>-->
+<!--</div>-->

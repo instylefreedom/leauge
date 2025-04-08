@@ -8,69 +8,247 @@
 <!--<body>-->
 {{>layout/header}}
 
-<div class = "col-md-12 ">
-    <select class="form-control kt-select2" id="season" name="season" style="display: inline-block;width: 210px" >
-        <option value="">검색할 시즌을 골라주세요</option>
-        <option value="1">시즌1</option>
-        <option value="2">시즌2</option>
-        <option value="3">시즌3</option>
-        <option value="4">시즌4(본시즌)</option>
-    </select>
-    <button type="button" class="btn btn-primary" id="btn-dashboard">검색</button>
-<!--    <div class="col-md-12 my_bg my_div">-->
-<!--        <div class = "divPos">-->
-<!--            <h1>롤 내전</h1>-->
-<!--            <div class="row">-->
-<!--                <div class="col-md-6">-->
-<!--                    {{#userName}}-->
-<!--                        <a href="/board/admin" role="button" class="btn btn-primary">관리자 게시판</a>-->
-<!--                        <a href="/" role="button" class="btn btn-primary">흠으로</a>-->
-<!--                        <a href="/game/view" role="button" class="btn btn-primary">내전 기록 조회</a>-->
-<!--                        <a href="/user/update/{{user}}" role="button" class="btn btn-primary">내 정보 조회</a>-->
-<!--&lt;!&ndash;                        <a href="/user/save" role="button" class="btn btn-primary">유저 등록</a>&ndash;&gt;-->
-<!--                        <a href="/log/save" role="button" class="btn btn-primary">내전 등록(세트별)</a>-->
-<!--                    {{/userName}}-->
-<!--                    {{#userName}}-->
-<!--&lt;!&ndash;                        Logged in as: <span id="user">{{userName}}</span>&ndash;&gt;-->
-<!--                        <a href="/logout" class="btn btn-info active" role="button">Logout</a>-->
-<!--                    {{/userName}}-->
-<!--                    {{^userName}}-->
-<!--                        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>-->
-<!--                    {{/userName}}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <br>-->
-<!--    </div>-->
-    <div class="col-md-12">
-        <div class="w-90">
-            <!--    목록 출력-->
-            <!--    <table class="table table-horizontal table-bordered">-->
-            <table id="userTable" class="table table-bordered">
-                <thead class = "thead-string">
-                <tr>
-<!--                    <th style="display:none">유저id</th>-->
-                    <th></th>
-                    <th>유저명</th>
-                    <th>티어</th>
-                    <th>레이팅</th>
-                    <th>주라인</th>
-                    <th>부라인</th>
-                    <th>참여경기</th>
-                    <th>승</th>
-                    <th>패</th>
-                    <th>승률</th>
-                    <th>승점</th>
-                    <th>마지막 참여일</th>
-<!--                    <th>연승</th>-->
-<!--                    <th>연패</th>-->
-                </tr>
-                </thead>
-            </table>
-        </div>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<style>
+    :root {
+        --dark-bg: #1a1a1a;
+        --dark-secondary: #2a2a2a;
+        --dark-hover: #3a3a3a;  /* Re-adding this variable */
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --accent: #4CAF50;
+        --accent-hover: #45a049;
+        --border: #333;
+    }
 
+    body {
+        background-color: var(--dark-bg);
+        color: var(--text-primary);
+        font-family: 'circularSub', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+    }
+
+    .search-section {
+        margin-bottom: 3rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .sq-select {
+        background-color: var(--dark-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        padding: 12px 16px;
+        font-size: 14px;
+        min-width: 250px;
+        border-radius: 4px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23ffffff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+    }
+
+    .sq-button {
+        background-color: var(--accent);
+        color: var(--text-primary);
+        border: none;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .sq-button:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-1px);
+    }
+
+    .sq-table {
+        width: 100%;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--dark-secondary);
+        margin-top: 2rem;
+    }
+
+    .sq-table th {
+        background-color: var(--dark-secondary);
+        color: var(--text-secondary);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 12px;
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sq-table td {
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+    }
+
+    /* Apply the former hover style to all table rows by default */
+    .sq-table tbody tr {
+        background-color: var(--dark-hover);
+    }
+
+    .sq-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+        .search-section {
+            flex-direction: column;
+        }
+
+        .sq-select {
+            width: 100%;
+        }
+    }
+    /* Override DataTables background settings */
+    table.dataTable,
+    table.dataTable tbody tr,
+    .sq-table.dataTable tbody tr {
+        background-color: var(--dark-hover) !important;
+    }
+
+    /* Target even rows if DataTables applies striping */
+    table.dataTable tbody tr.even,
+    table.dataTable.stripe tbody tr.even,
+    .sq-table.dataTable tbody tr.even {
+        background-color: var(--dark-hover) !important;
+    }
+
+    /* Target odd rows if DataTables applies striping */
+    table.dataTable tbody tr.odd,
+    table.dataTable.stripe tbody tr.odd,
+    .sq-table.dataTable tbody tr.odd {
+        background-color: var(--dark-hover) !important;
+    }
+
+    /* Ensure the header has correct background */
+    table.dataTable thead th,
+    .sq-table.dataTable thead th {
+        background-color: var(--dark-secondary) !important;
+    }
+</style>
+<body>
+<div class="dashboard-container">
+    <div class="search-section">
+        <select class="sq-select" id="season" name="season">
+            <option value="">검색할 시즌을 골라주세요</option>
+            <option value="1">시즌1</option>
+            <option value="2">시즌2</option>
+            <option value="3">시즌3</option>
+            <option value="4">시즌4(본시즌)</option>
+        </select>
+        <button type="button" class="sq-button" id="btn-dashboard">검색</button>
     </div>
+
+    <table id="userTable" class="sq-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>유저명</th>
+            <th>티어</th>
+            <th>레이팅</th>
+            <th>주라인</th>
+            <th>부라인</th>
+            <th>참여경기</th>
+            <th>승</th>
+            <th>패</th>
+            <th>승률</th>
+            <th>승점</th>
+            <th>마지막 참여일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Data will be populated dynamically -->
+        </tbody>
+    </table>
 </div>
+</body>
+
+<!--<div class = "col-md-12 ">-->
+<!--    <select class="form-control kt-select2" id="season" name="season" style="display: inline-block;width: 210px" >-->
+<!--        <option value="">검색할 시즌을 골라주세요</option>-->
+<!--        <option value="1">시즌1</option>-->
+<!--        <option value="2">시즌2</option>-->
+<!--        <option value="3">시즌3</option>-->
+<!--        <option value="4">시즌4(본시즌)</option>-->
+<!--    </select>-->
+<!--    <button type="button" class="btn btn-primary" id="btn-dashboard">검색</button>-->
+<!--&lt;!&ndash;    <div class="col-md-12 my_bg my_div">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class = "divPos">&ndash;&gt;-->
+<!--&lt;!&ndash;            <h1>롤 내전</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{#userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/board/admin" role="button" class="btn btn-primary">관리자 게시판</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/" role="button" class="btn btn-primary">흠으로</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/game/view" role="button" class="btn btn-primary">내전 기록 조회</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/user/update/{{user}}" role="button" class="btn btn-primary">내 정보 조회</a>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <a href="/user/save" role="button" class="btn btn-primary">유저 등록</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/log/save" role="button" class="btn btn-primary">내전 등록(세트별)</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{/userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{#userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        Logged in as: <span id="user">{{userName}}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/logout" class="btn btn-info active" role="button">Logout</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{/userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{^userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    {{/userName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <br>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    <div class="col-md-12">-->
+<!--        <div class="w-90">-->
+<!--            &lt;!&ndash;    목록 출력&ndash;&gt;-->
+<!--            &lt;!&ndash;    <table class="table table-horizontal table-bordered">&ndash;&gt;-->
+<!--            <table id="userTable" class="table table-bordered">-->
+<!--                <thead class = "thead-string">-->
+<!--                <tr>-->
+<!--&lt;!&ndash;                    <th style="display:none">유저id</th>&ndash;&gt;-->
+<!--                    <th></th>-->
+<!--                    <th>유저명</th>-->
+<!--                    <th>티어</th>-->
+<!--                    <th>레이팅</th>-->
+<!--                    <th>주라인</th>-->
+<!--                    <th>부라인</th>-->
+<!--                    <th>참여경기</th>-->
+<!--                    <th>승</th>-->
+<!--                    <th>패</th>-->
+<!--                    <th>승률</th>-->
+<!--                    <th>승점</th>-->
+<!--                    <th>마지막 참여일</th>-->
+<!--&lt;!&ndash;                    <th>연승</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>연패</th>&ndash;&gt;-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--            </table>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+
+
 {{>layout/footer}}
 <!--</body>-->
 <!--</html>-->
