@@ -35,10 +35,13 @@
         background-color: var(--dark-secondary);
         padding: 1rem 0;
         border-bottom: 1px solid var(--border);
+        position: relative; /* Ensures it stays in the normal document flow */
+        top: 0;
+        left: 0;
+        width: 100%; /* Ensures it spans the full width */
     }
 
     .nav-container {
-        max-width: 1400px;
         margin: 0 auto;
         padding: 0 2rem;
         display: flex;

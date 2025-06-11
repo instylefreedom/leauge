@@ -5,7 +5,7 @@
             processing: true,
             destroy: true,
             "ajax": {
-                "url": "/api/user/get/dashboard/4",
+                "url": "/api/user/get/dashboard/5",
                 "type": "post",
                 "dataSrc": "data"
                 //     function(res){
@@ -25,8 +25,9 @@
                 {"data": "win"},
                 {"data": "loss"},
                 {"data": "winRate"},
-                {"data": "winPoint"},
-                {"data": "lastPlayDate"},
+                // {"data": "winPoint"},
+                // {"data": "lastPlayDate"},
+                {"data": "lastPlayDateSince"},
                 // {"data": "cwin"},
                 // {"data": "close"},
             ]
@@ -127,8 +128,9 @@
                  {"data": "win"},
                  {"data": "loss"},
                  {"data": "winRate"},
-                 {"data": "winPoint"},
-                 {"data": "lastPlayDate"},
+                 // {"data": "winPoint"},
+                 // {"data": "lastPlayDate"},
+                 {"data": "lastPlayDateSince"},
                  // {"data": "cwin"},
                  // {"data": "close"},
              ]

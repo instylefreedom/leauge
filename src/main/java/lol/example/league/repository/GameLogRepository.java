@@ -135,4 +135,7 @@ public interface GameLogRepository extends JpaRepository<GameLog, Long> {
     List<Map<String,String>> getConsecutiveRound(@Param("userId") Long userId, @Param("season") Long season);
 
     void deleteAllByPlayDateAndRound(Integer playDate, Integer round);
+
+    @Query(value= "select count(p) from GameLog as p where p.userId = :userId and p.season = :season group by p.playDate, p.round")
+    Integer countByUserIdAndSeasonAndGroupByGame(@Param("userId") Long userId, @Param("season") Integer season);
 }

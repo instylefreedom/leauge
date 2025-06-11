@@ -33,6 +33,7 @@ public class TeamMatchController {
     public ApiResponse match(@RequestBody UserMatchRequest request) throws Exception {
 
         teamMatchService.matchUser(request.getUsers());
+        teamMatchService.matchUser2(request.getUsers());
         return ApiResponseUtil.success();
 
     }

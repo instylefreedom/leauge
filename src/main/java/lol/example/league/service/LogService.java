@@ -19,7 +19,6 @@ import org.springframework.util.ObjectUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -91,16 +90,20 @@ public class LogService {
             int setCount = 1;
             GameResult team1 = null;
             GameResult team2 = null;
+            Integer team1Total = 0;
+            Integer team2Total = 0;
             for(Integer set:setResult) {
                 Integer valid = repository.findDupeGame(Integer.valueOf(gameDate), season, round, setCount);
                 if(valid == 0){
                     if(set == 1){
                         team1 = GameResult.WIN;
                         team2 = GameResult.LOSE;
+                        team1Total += 1;
                     }
                     else if(set ==2){
                         team1 = GameResult.LOSE;
                         team2 = GameResult.WIN;
+                        team2Total += 1;
                     }
                     for (int i = 0; i < 5; i++) {
                         User user = service.findByName(player.get(i));
@@ -117,7 +120,7 @@ public class LogService {
                                 .createdBy(admin.getUserId())
                                 .build();
                         repository.save(log);
-                        calculateUserRating(user, team1);
+//                        calculateUserRating(user, team1);
                     }
 
                     for (int k = 5; k < 10; k++) {
@@ -135,7 +138,7 @@ public class LogService {
                                 .createdBy(admin.getUserId())
                                 .build();
                         repository.save(log);
-                        calculateUserRating(user, team2);
+//                        calculateUserRating(user, team2);
                     }
                     gameId ++;
                     setCount ++;
@@ -144,6 +147,15 @@ public class LogService {
                     log.info("중복 내전 결과 저장 시도 확인! 날짜: {} 라운드: {} 세트: {}", request.getGameDate(), request.getRound(), setCount);
                     return (String.format("중복 내전 결과 저장 시도 확인! 날짜: %s 라운드: %s 세트: %s", request.getGameDate(), request.getRound(), setCount));
                 }
+                if(team1Total > team2Total) {
+                    calculateUserRating2(GameResult.WIN, player.subList(0, 5), season);
+                    calculateUserRating2(GameResult.LOSE, player.subList(5, 10), season);
+                }
+                else {
+                    calculateUserRating2(GameResult.LOSE, player.subList(0, 5), season);
+                    calculateUserRating2(GameResult.WIN, player.subList(5, 10), season);
+                }
+
             }
 
         }
@@ -155,39 +167,85 @@ public class LogService {
 
         return null;
     }
-    public void calculateUserRating(User user, GameResult result) {
-        // 점수제 기반 +- 처리
-        // 브~골 + 1티어 점수 변동
-        if(user.getRating() <= 1980){
-            if((user.getRating()>=1560 && user.getRating()<=1580) || (user.getRating()>=1660 && user.getRating()<=1680) || (user.getRating()>=1760 && user.getRating()<=1780)) {
-                if(result.equals(GameResult.WIN)) {
-                    user.setRating(user.getRating()+2);
+
+    private void calculateUserRating2(GameResult gameResult, List<String> strings, Integer season) {
+        // 보통 유저는 승패에 따라 +-10
+        // 그런데 첫 5 판은 +15  -5
+        // 5~20 판 까진 +12 -8 처리
+
+        for(String u : strings) {
+            User user = service.findByName(u);
+            Integer gameCount = repository.countByUserIdAndSeasonAndGroupByGame(user.getUserId(), season);
+            if(gameCount <= 5) {
+                if(gameResult.equals(GameResult.WIN)) {
+                    user.setRating(user.getRating()+15);
                 }
                 else{
-                    user.setRating(user.getRating()-2);
+                    user.setRating(user.getRating()-5);
+                }
+            }
+            else if(gameCount <= 20) {
+                if(gameResult.equals(GameResult.WIN)) {
+                    user.setRating(user.getRating()+12);
+                }
+                else{
+                    user.setRating(user.getRating()-8);
                 }
             }
             else {
-                    if (result.equals(GameResult.WIN)) {
-                        user.setRating(user.getRating() + 3);
-                    } else {
-                        //2025-02-15 1480 이하로는 내려가지 않게 변경
-                        if(user.getRating() > 1480) {
-                            user.setRating(user.getRating() - 2);
-                        }
-                    }
+                if(gameResult.equals(GameResult.WIN)) {
+                    user.setRating(user.getRating()+10);
+                }
+                else{
+                    user.setRating(user.getRating()-10);
+                }
             }
         }
 
-        // 플레 이상
-        else {
-            if(result.equals(GameResult.WIN)) {
-                user.setRating(user.getRating()+2);
-            }
-            else{
-                user.setRating(user.getRating()-2);
-            }
+    }
+
+    public void calculateUserRating(User user, GameResult result) {
+
+        //전티어 정체구간 없이 +-4 처리
+        if(result.equals(GameResult.WIN)) {
+            user.setRating(user.getRating()+10);
         }
+        else{
+            user.setRating(user.getRating()-10);
+        }
+
+//        // 점수제 기반 +- 처리
+//        // 브~골 + 1티어 점수 변동
+//        if(user.getRating() <= 1980){
+//            if((user.getRating()>=1560 && user.getRating()<=1580) || (user.getRating()>=1660 && user.getRating()<=1680) || (user.getRating()>=1760 && user.getRating()<=1780)) {
+//                if(result.equals(GameResult.WIN)) {
+//                    user.setRating(user.getRating()+2);
+//                }
+//                else{
+//                    user.setRating(user.getRating()-2);
+//                }
+//            }
+//            else {
+//                    if (result.equals(GameResult.WIN)) {
+//                        user.setRating(user.getRating() + 3);
+//                    } else {
+//                        //2025-02-15 1480 이하로는 내려가지 않게 변경
+//                        if(user.getRating() > 1480) {
+//                            user.setRating(user.getRating() - 2);
+//                        }
+//                    }
+//            }
+//        }
+//
+//        // 플레 이상
+//        else {
+//            if(result.equals(GameResult.WIN)) {
+//                user.setRating(user.getRating()+2);
+//            }
+//            else{
+//                user.setRating(user.getRating()-2);
+//            }
+//        }
 
 
     }

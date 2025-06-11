@@ -26,6 +26,7 @@ public class UserResponse {
     private Integer rating;
     private Boolean admin;
     private String lastPlayDate;
+    private String lastPlayDateSince;
 
 
 //    public UserResponse(User user, Integer matchNumber, Integer win, Integer loss, String winRate, Integer winPoint){

@@ -123,6 +123,19 @@ public class TeamMatchService {
 
     }
 
+    // 조합 생성 함수
+    public static void combine(List<Integer> arr, int r, int start, List<Integer> current, List<List<Integer>> result) {
+        if (current.size() == r) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+        for (int i = start; i < arr.size(); i++) {
+            current.add(arr.get(i));
+            combine(arr, r, i + 1, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+
     private static void generateCombinations(List<Long> teamList, int teamSize, int start,
                                              List<Long> current, List<List<Long>> result) {
         if (current.size() == teamSize) {
@@ -139,24 +152,18 @@ public class TeamMatchService {
 
     public String getRule() {
         Random rnd = new Random();
-        Integer random = rnd.nextInt(5);
+        Integer random = rnd.nextInt(3);
         String rule = null;
 
         switch (random) {
             case 0:
-                rule = "토너먼트 드래프트 (밴가드 0)";
-                break;
-            case 1:
-                rule = "토너먼트 드래프트 (밴가드 X)";
-                break;
-            case 2:
                 rule = "하드피어리스 (밴가드 0)";
                 break;
-            case 3:
+            case 1:
                 rule = "하드피어리스 (밴가드 X)";
                 break;
-            case 4:
-                rule = "토너먼트 드래프트 (3라운드 블라인드)";
+            case 2:
+                rule = "하드피어리스 (벤 목록 포함)";
                 break;
         }
 
@@ -181,47 +188,128 @@ public class TeamMatchService {
                 .build();
 
     }
+    @Getter
+    static class User {
+        String id;
+        int score;
+
+        User(String id, int score) {
+            this.id = id;
+            this.score = score;
+        }
+
+        @Override
+        public String toString() {
+            return id + "(" + score + ")";
+        }
+    }
+
+    static class Result {
+        List<User> teamA;
+        List<User> teamB;
+        int diff;
+
+        Result(List<User> teamA, List<User> teamB, int diff) {
+            this.teamA = teamA;
+            this.teamB = teamB;
+            this.diff = diff;
+        }
+    }
+    public void matchUser2(List<String> userList)  throws Exception {
+
+        Long difference = 100L;
+        List<UserMatchMake> finalTeam1 = new ArrayList<>();
+        List<UserMatchMake> finalTeam2 = new ArrayList<>();
+
+        // 유저 10명 조회
+        List<MatchMapping> userInfoList = userRepository.getMatchUser(userList);
+        Map<String, MatchMapping> userInfoMap = userInfoList.stream().collect(Collectors.toMap(u -> u.getUserName(), u -> u));
+
+        if(userInfoList.size() != 10) {
+            throw new Exception("매치 메이킹 인원이 10명이 안됩니다. 입렵 인원을 확인해 주세요");
+        }
+
+        List<User> users = userInfoList.stream()
+                .map(u -> new User(u.getUserName(), Math.toIntExact(u.getRating())))
+                .collect(Collectors.toList());
+        int n = users.size();
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < n; i++) indices.add(i);
+
+        List<List<Integer>> allTeamA = new ArrayList<>();
+        combine(indices, 5, 0, new ArrayList<>(), allTeamA);
+
+        Set<String> seen = new HashSet<>();
+        Result bestResult = null;
+
+        for (List<Integer> teamAIndices : allTeamA) {
+            List<Integer> teamBIndices = new ArrayList<>(indices);
+            teamBIndices.removeAll(teamAIndices);
+
+            List<Integer> sortedA = new ArrayList<>(teamAIndices);
+            List<Integer> sortedB = new ArrayList<>(teamBIndices);
+            Collections.sort(sortedA);
+            Collections.sort(sortedB);
+            String key = sortedA.toString() + "|" + sortedB.toString();
+            String keyReversed = sortedB.toString() + "|" + sortedA.toString();
+            if (seen.contains(key) || seen.contains(keyReversed)) continue;
+            seen.add(key);
+
+            List<User> teamA = new ArrayList<>();
+            List<User> teamB = new ArrayList<>();
+            int scoreA = 0, scoreB = 0;
+
+            for (int idx : teamAIndices) {
+                User user = users.get(idx);
+                teamA.add(user);
+                scoreA += user.score;
+            }
+
+            for (int idx : teamBIndices) {
+                User user = users.get(idx);
+                teamB.add(user);
+                scoreB += user.score;
+            }
+
+            int diff = Math.abs(scoreA - scoreB);
+
+            if (bestResult == null || diff < bestResult.diff) {
+                bestResult = new Result(teamA, teamB, diff);
+            }
+        }
 
 
-//    public void liverTest() {
-//
-//        List<afp> afpList = repository.findAll();
-//        // 환자 리스트 정리
-//        Set<Integer> patientList = afpList.stream().map(p -> Integer.valueOf(p.getWlId())).collect(Collectors.toSet());
-//
-//        List<afp_final> finalList = new ArrayList<>();
-//        for(Integer patient : patientList) {
-//            List<afp> plist = repository.findAllByWlId(patient.toString());
-//            String id = patient.toString();
-//            Integer initial = 0;
-//            Integer previous = 0;
-//            Integer follow = 0;
-//            Integer diff= 0;
-//            for(afp raw: plist) {
-//                if (raw.getInit().equals("Initial")) {
-//                    initial = Integer.valueOf(raw.getAfp().replace(".0", ""));
-//                    previous = Integer.valueOf(raw.getAfp().replace(".0", ""));
-//                }
-//                else {
-//                    if (Math.abs(previous - Integer.valueOf(raw.getAfp().replace(".0", ""))) > diff) {
-//                        follow = Integer.valueOf(raw.getAfp().replace(".0", ""));
-//                        diff = Math.abs(previous - Integer.valueOf(raw.getAfp().replace(".0", "")));
-//                    }
-//                    previous = Integer.valueOf(raw.getAfp().replace(".0", ""));
-//                }
-//            }
-//
-//            afp_final insert = afp_final.builder()
-//                    .wlId(id)
-//                    .afpInitial(initial)
-//                    .afpFollowup(follow)
-//                    .afpDifference(initial - follow)
-//                    .build();
-//            finalList.add(insert);
-//
-//        }
-//
-//        finalRepository.saveAll(finalList);
-//
-//    }
+        difference = (long) bestResult.diff;
+        finalTeam1 = bestResult.teamA.stream().map(t -> UserMatchMake.of(userInfoMap.get(t.id))).collect(Collectors.toList());
+        finalTeam2 = bestResult.teamB.stream().map(t -> UserMatchMake.of(userInfoMap.get(t.id))).collect(Collectors.toList());
+
+        System.out.println("🔵 Team A: " + bestResult.teamA);
+        System.out.println("🔴 Team B: " + bestResult.teamB);
+        System.out.println("📊 Score Difference: " + difference);
+
+        List<MatchMakingEntity> entity1 = finalTeam1.stream().map(t -> MatchMakingEntity.builder()
+                .userId(t.getUserId())
+                .team("team1")
+                .userName(t.getUserName())
+                .bracket(t.getBracket())
+                .tier(t.getTier())
+                .rating(t.getRating())
+                .mainLane(t.getMainLane())
+                .subLane(t.getSubLane())
+                .build()
+        ).toList();
+        matchMakingRepository.saveAll(entity1);
+        List<MatchMakingEntity> entity2 = finalTeam2.stream().map(t -> MatchMakingEntity.builder()
+                .userId(t.getUserId())
+                .team("team2")
+                .userName(t.getUserName())
+                .bracket(t.getBracket())
+                .tier(t.getTier())
+                .rating(t.getRating())
+                .mainLane(t.getMainLane())
+                .subLane(t.getSubLane())
+                .build()
+        ).toList();
+        matchMakingRepository.saveAll(entity2);
+    }
 }

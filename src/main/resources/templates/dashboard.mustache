@@ -145,6 +145,15 @@
     .sq-table.dataTable thead th {
         background-color: var(--dark-secondary) !important;
     }
+
+    input {
+        color: var(--text-primary); /* Use white or your defined variable for text color */
+        background-color: var(--dark-secondary); /* Optional: Match the input background to your theme */
+        border: 1px solid var(--border); /* Optional: Add a border to match your theme */
+        padding: 12px 16px; /* Optional: Add padding for better appearance */
+        font-size: 14px; /* Optional: Adjust font size */
+        border-radius: 4px; /* Optional: Add rounded corners */
+    }
 </style>
 <body>
 <div class="dashboard-container">
@@ -154,7 +163,8 @@
             <option value="1">시즌1</option>
             <option value="2">시즌2</option>
             <option value="3">시즌3</option>
-            <option value="4">시즌4(본시즌)</option>
+            <option value="4">시즌4</option>
+            <option value="4">시즌5(본시즌)</option>
         </select>
         <button type="button" class="sq-button" id="btn-dashboard">검색</button>
     </div>
@@ -172,7 +182,8 @@
             <th>승</th>
             <th>패</th>
             <th>승률</th>
-            <th>승점</th>
+<!--            <th>승점</th>-->
+<!--            <th>마지막 참여일 날짜</th>-->
             <th>마지막 참여일</th>
         </tr>
         </thead>

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class KosinISGLS {
 
-    private final String folderPath = "/Users/yangwonjong/python-excel/Kosin/raw2/";
+    private final String folderPath = "/Users/yangwonjong/python-excel/Kosin/raw3/";
     private final String resultPath = "/Users/yangwonjong/python-excel/Kosin/result/";
     private final String patientPath = "/Users/yangwonjong/python-excel/Kosin/patientop/";
     String filePath = "";
@@ -359,7 +359,7 @@ public class KosinISGLS {
 
 // 3. 집계한 데이터를 가지고 엑셀에 출력 작업 진행
         try {
-            File file = new File(resultPath + "result.xlsx");
+            File file = new File(resultPath + "isgls_result.xlsx");
             FileOutputStream fileout = new FileOutputStream(file);
 
             XSSFWorkbook workbook = new XSSFWorkbook();

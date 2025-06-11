@@ -18,6 +18,7 @@ import lol.example.league.util.ApiResponse;
 import lol.example.league.util.ApiResponseUtil;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,16 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
 //    @Autowired
@@ -173,7 +178,16 @@ public class UserService {
 //                }
 //            }
 
-
+            // 패턴 정의
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            long daysBetween = 0;
+            String lastPlayedSince = "NA";
+            // 문자열 → LocalDateTime 변환
+            if(d.get("created_at") != null) {
+                LocalDateTime dateTime = LocalDateTime.parse(String.valueOf(d.get("created_at")).substring(0, 19), formatter);
+                 daysBetween = ChronoUnit.DAYS.between(dateTime, LocalDateTime.now());
+                lastPlayedSince = daysBetween + "일 전";
+            }
 
             UserResponse data = UserResponse.builder()
                     .userId(Long.valueOf(String.valueOf(d.get("user_id"))))
@@ -186,8 +200,9 @@ public class UserService {
                     .win(Integer.valueOf(String.valueOf(d.get("winCount"))))
                     .loss(Integer.valueOf(String.valueOf(d.get("loseCount"))))
                     .winRate(rate)
-                    .winPoint(Integer.valueOf(String.valueOf(d.get("point"))))
-                    .lastPlayDate(String.valueOf(d.get("created_at")))
+//                    .winPoint(Integer.valueOf(String.valueOf(d.get("point"))))
+//                    .lastPlayDate(String.valueOf(d.get("created_at")))
+                    .lastPlayDateSince(lastPlayedSince)
                     .build();
             response.add(data);
 //            cwin=0;

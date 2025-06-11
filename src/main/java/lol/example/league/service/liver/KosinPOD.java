@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class KosinPOD {
 
-    private final String folderPath = "/Users/yangwonjong/python-excel/Kosin/raw2/";
+    private final String folderPath = "/Users/yangwonjong/python-excel/Kosin/raw3/";
     private final String resultPath = "/Users/yangwonjong/python-excel/Kosin/result/";
     private final String patientPath = "/Users/yangwonjong/python-excel/Kosin/patientop/";
     String filePath = "";
