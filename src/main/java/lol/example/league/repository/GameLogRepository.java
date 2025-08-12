@@ -34,7 +34,7 @@ public interface GameLogRepository extends JpaRepository<GameLog, Long> {
             "s.set1,\n" +
             "s.set2,\n" +
             "s.set3,\n" +
-            "u.user_name \n" +
+            "ifnull(u.user_name, '') as user_name \n" +
             "FROM \n" +
             "(\n" +
             "\tSELECT \n" +
@@ -136,6 +136,6 @@ public interface GameLogRepository extends JpaRepository<GameLog, Long> {
 
     void deleteAllByPlayDateAndRound(Integer playDate, Integer round);
 
-    @Query(value= "select count(p) from GameLog as p where p.userId = :userId and p.season = :season group by p.playDate, p.round")
+    @Query(value= "select count(*) from (select distinct user_id, play_date, round from game_log p where p.season = :season and user_id = :userId) p;", nativeQuery = true)
     Integer countByUserIdAndSeasonAndGroupByGame(@Param("userId") Long userId, @Param("season") Integer season);
 }

@@ -152,19 +152,17 @@ public class TeamMatchService {
 
     public String getRule() {
         Random rnd = new Random();
-        Integer random = rnd.nextInt(3);
+        int random = rnd.nextInt(100);  // 0 ~ 99
         String rule = null;
 
-        switch (random) {
-            case 0:
-                rule = "하드피어리스 (밴가드 0)";
-                break;
-            case 1:
-                rule = "하드피어리스 (밴가드 X)";
-                break;
-            case 2:
-                rule = "하드피어리스 (벤 목록 포함)";
-                break;
+        if (random < 30) { // 30%
+            rule = "하드피어리스 (벤 목록 포함)";
+        } else if (random < 55) { // 25%
+            rule = "하드피어리스 (밴가드 X)";
+        }  else if (random < 80) { // 25%
+            rule = "하드피어리스 (밴가드 0)";
+        } else { // 나머지 20%
+            rule = "토너먼트 드래프트";
         }
 
         return rule;

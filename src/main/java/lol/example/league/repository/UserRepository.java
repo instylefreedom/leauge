@@ -139,7 +139,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "     when rating > 2300 and rating <= 2340 then 4\n" +
             "     when rating > 2340 and rating <= 2380 then 3\n" +
             "     when rating > 2380 and rating <= 2420 then 2\n" +
-            "     when rating > 2420 and rating <= 2500 then 1  else null end as bracket\n" +
+            "     when rating > 2420 and rating <= 2500 then 1  else 0 end as bracket\n" +
             ", u.main_lane \n" +
             ", u.sub_lane \n" +
             ", u.rating  \n" +

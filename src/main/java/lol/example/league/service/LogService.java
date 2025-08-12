@@ -87,23 +87,41 @@ public class LogService {
             player.add(request.getPlayer9());
             player.add(request.getPlayer10());
 
+            //점수 반영
+            Integer team1Total = 0;
+            Integer team2Total = 0;
+            for(Integer set:setResult) {
+                Integer valid = repository.findDupeGame(Integer.valueOf(gameDate), season, round, 1);
+                if (valid == 0) {
+                    if (set == 1) {
+                        team1Total += 1;
+                    } else if (set == 2) {
+                        team2Total += 1;
+                    }
+                }
+            }
+            if(team1Total > team2Total) {
+                calculateUserRating2(GameResult.WIN, player.subList(0, 5), season);
+                calculateUserRating2(GameResult.LOSE, player.subList(5, 10), season);
+            }
+            else {
+                calculateUserRating2(GameResult.LOSE, player.subList(0, 5), season);
+                calculateUserRating2(GameResult.WIN, player.subList(5, 10), season);
+            }
+
             int setCount = 1;
             GameResult team1 = null;
             GameResult team2 = null;
-            Integer team1Total = 0;
-            Integer team2Total = 0;
             for(Integer set:setResult) {
                 Integer valid = repository.findDupeGame(Integer.valueOf(gameDate), season, round, setCount);
                 if(valid == 0){
                     if(set == 1){
                         team1 = GameResult.WIN;
                         team2 = GameResult.LOSE;
-                        team1Total += 1;
                     }
                     else if(set ==2){
                         team1 = GameResult.LOSE;
                         team2 = GameResult.WIN;
-                        team2Total += 1;
                     }
                     for (int i = 0; i < 5; i++) {
                         User user = service.findByName(player.get(i));
@@ -147,14 +165,6 @@ public class LogService {
                     log.info("중복 내전 결과 저장 시도 확인! 날짜: {} 라운드: {} 세트: {}", request.getGameDate(), request.getRound(), setCount);
                     return (String.format("중복 내전 결과 저장 시도 확인! 날짜: %s 라운드: %s 세트: %s", request.getGameDate(), request.getRound(), setCount));
                 }
-                if(team1Total > team2Total) {
-                    calculateUserRating2(GameResult.WIN, player.subList(0, 5), season);
-                    calculateUserRating2(GameResult.LOSE, player.subList(5, 10), season);
-                }
-                else {
-                    calculateUserRating2(GameResult.LOSE, player.subList(0, 5), season);
-                    calculateUserRating2(GameResult.WIN, player.subList(5, 10), season);
-                }
 
             }
 
@@ -176,6 +186,10 @@ public class LogService {
         for(String u : strings) {
             User user = service.findByName(u);
             Integer gameCount = repository.countByUserIdAndSeasonAndGroupByGame(user.getUserId(), season);
+            if(gameCount == null) {
+                gameCount = 0;
+            }
+            log.info("this is game count" + gameCount);
             if(gameCount <= 5) {
                 if(gameResult.equals(GameResult.WIN)) {
                     user.setRating(user.getRating()+15);

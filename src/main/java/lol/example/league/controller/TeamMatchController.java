@@ -32,7 +32,7 @@ public class TeamMatchController {
     @PostMapping ("/api/team/match")
     public ApiResponse match(@RequestBody UserMatchRequest request) throws Exception {
 
-        teamMatchService.matchUser(request.getUsers());
+//        teamMatchService.matchUser(request.getUsers());
         teamMatchService.matchUser2(request.getUsers());
         return ApiResponseUtil.success();
 
