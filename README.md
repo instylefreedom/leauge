@@ -54,8 +54,8 @@ The system allows users to **register, log match history, view performance stati
 ## 📊 Key Statistics
 | Metric | Value |
 |---------|--------|
-| Registered Users | 70+ |
-| Games Recorded | 200+ |
-| Average Active Users / Week | ~40 |
+| Registered Users | 90+ |
+| Games Recorded | 20000+ |
+| Average Active Users / Week | ~50 |
 
 ---
