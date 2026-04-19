@@ -5,7 +5,7 @@
             processing: true,
             destroy: true,
             "ajax": {
-                "url": "/api/user/get/dashboard/5",
+                "url": "/api/user/get/dashboard/7",
                 "type": "post",
                 "dataSrc": "data"
                 //     function(res){

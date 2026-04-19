@@ -185,35 +185,42 @@ public class LogService {
 
         for(String u : strings) {
             User user = service.findByName(u);
-            Integer gameCount = repository.countByUserIdAndSeasonAndGroupByGame(user.getUserId(), season);
-            if(gameCount == null) {
-                gameCount = 0;
+            if(gameResult.equals(GameResult.WIN)) {
+                user.setRating(user.getRating()+8);
             }
-            log.info("this is game count" + gameCount);
-            if(gameCount <= 5) {
-                if(gameResult.equals(GameResult.WIN)) {
-                    user.setRating(user.getRating()+15);
-                }
-                else{
-                    user.setRating(user.getRating()-5);
-                }
+            else{
+                user.setRating(user.getRating()-8);
             }
-            else if(gameCount <= 20) {
-                if(gameResult.equals(GameResult.WIN)) {
-                    user.setRating(user.getRating()+12);
-                }
-                else{
-                    user.setRating(user.getRating()-8);
-                }
-            }
-            else {
-                if(gameResult.equals(GameResult.WIN)) {
-                    user.setRating(user.getRating()+10);
-                }
-                else{
-                    user.setRating(user.getRating()-10);
-                }
-            }
+        // 위 첫 몇판 처리 제거후 일관된 포인트 부여
+//            Integer gameCount = repository.countByUserIdAndSeasonAndGroupByGame(user.getUserId(), season);
+//            if(gameCount == null) {
+//                gameCount = 0;
+//            }
+//            log.info("this is game count" + gameCount);
+//            if(gameCount <= 5) {
+//                if(gameResult.equals(GameResult.WIN)) {
+//                    user.setRating(user.getRating()+15);
+//                }
+//                else{
+//                    user.setRating(user.getRating()-5);
+//                }
+//            }
+//            else if(gameCount <= 20) {
+//                if(gameResult.equals(GameResult.WIN)) {
+//                    user.setRating(user.getRating()+12);
+//                }
+//                else{
+//                    user.setRating(user.getRating()-8);
+//                }
+//            }
+//            else {
+//                if(gameResult.equals(GameResult.WIN)) {
+//                    user.setRating(user.getRating()+10);
+//                }
+//                else{
+//                    user.setRating(user.getRating()-10);
+//                }
+//            }
         }
 
     }
@@ -222,10 +229,10 @@ public class LogService {
 
         //전티어 정체구간 없이 +-4 처리
         if(result.equals(GameResult.WIN)) {
-            user.setRating(user.getRating()+10);
+            user.setRating(user.getRating()+8);
         }
         else{
-            user.setRating(user.getRating()-10);
+            user.setRating(user.getRating()-8);
         }
 
 //        // 점수제 기반 +- 처리
